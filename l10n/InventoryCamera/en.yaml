@@ -5,12 +5,6 @@ cameraSettings_name: Camera Settings
 person_name: Enable for...
 person_first: First Person
 person_third: Third Person
-requiredWindows_name: Required Windows
-requiredWindows_desc: Camera will switch only if all selected windows are present.
-requiredWindows_inventory: Inventory
-requiredWindows_stats: Stats
-requiredWindows_magic: Magic
-requiredWindows_map: Map
 smoothPanning_name: Smooth Camera Panning
 smoothPanning_desc: |
   If enabled, the camera will gradually ease into position. Applies for opening inventory from any person, but closing only in third.

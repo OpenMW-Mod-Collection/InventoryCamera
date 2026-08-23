@@ -10,18 +10,40 @@ local I = require('openmw.interfaces')
 local settingsCache = require("scripts.InventoryCamera.utils.settingsCache")
 
 local namespace = "InventoryCamera"
+local previewTag = namespace .. "Preview"
+
+----------------------------------------------------------------------
+-- Preview (declared before settings so the subscribe callbacks below
+-- can reference startPreview)
+----------------------------------------------------------------------
+
+local PREVIEW_DURATION = 3
+
+-- Forward-declared; assigned further down once camera helpers exist.
+local startPreview
+local endPreview
+local preview
+
 local settings = {
     cam = settingsCache.new(
         storage.playerSection("SettingsInventoryCamera_camera"),
-        async
+        async,
+        function(key) -- my subscribe callback
+        end
     ),
     start = settingsCache.new(
         storage.playerSection("SettingsInventoryCamera_startingPosition"),
-        async
+        async,
+        function(key)
+            if startPreview then startPreview('start') end
+        end
     ),
     finish = settingsCache.new(
         storage.playerSection("SettingsInventoryCamera_destination"),
-        async
+        async,
+        function(key)
+            if startPreview then startPreview('finish') end
+        end
     ),
 }
 
@@ -35,8 +57,9 @@ local savedYaw = camera.getYaw()
 local savedPitch = camera.getPitch()
 local savedRoll = camera.getRoll()
 local savedOffset = camera.getFocalPreferredOffset()
+local savedDistance = camera.getThirdPersonDistance()
 
--- Yaw/pitch/roll tween state, advanced from onUpdate
+-- Yaw/pitch/roll/distance/offset tween state, advanced from onUpdate
 local pan = {
     running = false,
     elapsed = 0,
@@ -47,6 +70,10 @@ local pan = {
     toPitch = 0,
     fromRoll = 0,
     toRoll = 0,
+    fromDistance = 0,
+    toDistance = 0,
+    fromOffset = nil,
+    toOffset = nil,
 }
 
 -- Shortest signed angular distance from a to b, wrapped to [-pi, pi]
@@ -75,19 +102,34 @@ local function yawDelta(a, b)
     end
 end
 
-local function startPan(toYaw, toPitch, toRoll)
+local function startPan(toYaw, toPitch, toRoll, fromDistance, toDistance, fromOffset, toOffset)
     pan.running = true
     pan.elapsed = 0
     pan.duration = math.max(settings.cam.panDuration, 0.001)
     pan.fromYaw = camera.getYaw()
     pan.fromPitch = camera.getPitch()
     pan.fromRoll = camera.getRoll()
+    -- Explicit from-values for distance/offset instead of querying the
+    -- camera: getThirdPersonDistance()/getFocalPreferredOffset() return the
+    -- actual, simulated value, which can lag a frame or more behind what we
+    -- just set (e.g. reading back near-0 right after a mode switch).
+    pan.fromDistance = fromDistance
+    pan.fromOffset = fromOffset
     pan.toYaw = toYaw
     pan.toPitch = toPitch
     pan.toRoll = toRoll
+    pan.toDistance = toDistance
+    pan.toOffset = toOffset
 end
 
 local function onUpdate(dt)
+    if preview.active then
+        preview.timeLeft = preview.timeLeft - dt
+        if preview.timeLeft <= 0 then
+            endPreview()
+        end
+    end
+
     if not pan.running then return end
 
     pan.elapsed = pan.elapsed + dt
@@ -98,6 +140,11 @@ local function onUpdate(dt)
     camera.setYaw(pan.fromYaw + yD * eased)
     camera.setPitch(pan.fromPitch + (pan.toPitch - pan.fromPitch) * eased)
     camera.setRoll(pan.fromRoll + (pan.toRoll - pan.fromRoll) * eased)
+    camera.setPreferredThirdPersonDistance(pan.fromDistance + (pan.toDistance - pan.fromDistance) * eased)
+    camera.setFocalPreferredOffset(pan.fromOffset + (pan.toOffset - pan.fromOffset) * eased)
+    -- Drive the offset ourselves rather than relying on the engine's own
+    -- built-in smoothing (which appears to stall while the game is paused).
+    camera.instantTransition()
 
     if t >= 1 then
         pan.running = false
@@ -106,45 +153,72 @@ end
 
 local function enterInventoryView()
     if active then return end
+    if preview.active then endPreview() end
 
-    local person = camera.getMode()
-    local firstPersonCheck = person == camera.MODE.FirstPerson and settings.cam.person.first
-    local thirdPersonCheck = person == camera.MODE.ThirdPerson and settings.cam.person.third
+    local currCamMode = camera.getMode()
+    local firstPersonCheck = currCamMode == camera.MODE.FirstPerson and settings.cam.person.first
+    local thirdPersonCheck = currCamMode == camera.MODE.Preview and settings.cam.person.third
     if not firstPersonCheck and not thirdPersonCheck then
         return
     end
 
     active = true
-    savedMode = camera.getMode()
+    savedMode = currCamMode
     savedYaw = camera.getYaw()
     savedPitch = camera.getPitch()
     savedRoll = camera.getRoll()
     savedOffset = camera.getFocalPreferredOffset()
+    savedDistance = camera.getThirdPersonDistance()
 
-    -- Stop the built-in camera script from fighting us while the menu is open
-    I.Camera.disableModeControl(namespace)
-    I.Camera.disableThirdPersonOffsetControl(namespace)
-    I.Camera.disableZoom(namespace)
-    I.Camera.disableStandingPreview(namespace)
+    if firstPersonCheck then
+        -- Stop the built-in camera script from fighting us while the menu is open
+        I.Camera.disableModeControl(namespace)
+        I.Camera.disableThirdPersonOffsetControl(namespace)
+        I.Camera.disableZoom(namespace)
+        I.Camera.disableStandingPreview(namespace)
+    end
 
     camera.setMode(camera.MODE.Preview, true)
-    camera.setPreferredThirdPersonDistance(settings.start.distance)
-    camera.setFocalPreferredOffset(v2(
-        settings.start.horizontalOffset,
-        settings.start.verticalOffset
-    ))
+    local startYaw = firstPersonCheck
+        and self.rotation:getYaw() + math.rad(settings.start.yaw)
+        or self.rotation:getYaw() - camera.getYaw() -- BROKEN
+    if firstPersonCheck then
+        camera.setFocalPreferredOffset(v2(
+            settings.start.horizontalOffset,
+            settings.start.verticalOffset
+        ))
+        camera.setPreferredThirdPersonDistance(settings.start.distance)
+        camera.setYaw(startYaw)
+        camera.setPitch(math.rad(settings.start.pitch))
+        camera.setRoll(math.rad(settings.start.roll))
+    end
+    camera.instantTransition()
 
-    local targetYaw = math.rad(settings.finish.yaw)
+    -- Destination values: the pan target for all of yaw/pitch/roll/distance/
+    -- offset, tweened below (manually, not relying on the engine's own
+    -- offset smoothing) when smooth panning is on.
+    local targetYaw = startYaw + math.rad(settings.finish.yaw)
     local targetPitch = math.rad(settings.finish.pitch)
     local targetRoll = math.rad(settings.finish.roll)
+    local targetDistance = settings.finish.distance
+    local targetOffset = v2(settings.finish.horizontalOffset, settings.finish.verticalOffset)
+    local startDistance = firstPersonCheck
+        and settings.start.distance
+        or savedDistance
+    local startOffset = firstPersonCheck
+        and v2(settings.start.horizontalOffset, settings.start.verticalOffset)
+        or savedOffset
 
     if settings.cam.smoothPanning then
-        startPan(targetYaw, targetPitch, targetRoll)
+        startPan(targetYaw, targetPitch, targetRoll, startDistance, targetDistance, startOffset, targetOffset)
     else
         pan.running = false
         camera.setYaw(targetYaw)
         camera.setPitch(targetPitch)
         camera.setRoll(targetRoll)
+        camera.setPreferredThirdPersonDistance(targetDistance)
+        camera.setFocalPreferredOffset(targetOffset)
+        camera.instantTransition()
     end
 end
 
@@ -160,9 +234,11 @@ local function exitInventoryView()
     if settings.cam.restoreOnClose then
         camera.setMode(savedMode, true)
         camera.setFocalPreferredOffset(savedOffset)
+        camera.setPreferredThirdPersonDistance(savedDistance)
+        camera.instantTransition()
         local instant = savedMode == camera.MODE.FirstPerson
         if settings.cam.smoothPanning and not instant then
-            startPan(savedYaw, savedPitch, savedRoll)
+            startPan(savedYaw, savedPitch, savedRoll, savedDistance, savedDistance, savedOffset, savedOffset)
         else
             pan.running = false
             camera.setYaw(savedYaw)
@@ -175,6 +251,77 @@ local function exitInventoryView()
 end
 
 ----------------------------------------------------------------------
+-- Preview
+----------------------------------------------------------------------
+-- While tweaking the "starting position" or "destination" settings outside
+-- the inventory, briefly show the camera at that position so the change is
+-- visible without having to open the inventory to check. Ends after
+-- PREVIEW_DURATION seconds, or immediately on a mouse click.
+
+preview = {
+    active = false,
+    timeLeft = 0,
+    savedMode = nil,
+    savedYaw = nil,
+    savedPitch = nil,
+    savedRoll = nil,
+    savedDistance = nil,
+}
+
+endPreview = function()
+    if not preview.active then return end
+    preview.active = false
+
+    I.Camera.enableModeControl(previewTag)
+    I.Camera.enableThirdPersonOffsetControl(previewTag)
+    I.Camera.enableZoom(previewTag)
+    I.Camera.enableStandingPreview(previewTag)
+
+    camera.setMode(preview.savedMode, true)
+    camera.setPreferredThirdPersonDistance(preview.savedDistance)
+    camera.instantTransition()
+    camera.setYaw(preview.savedYaw)
+    camera.setPitch(preview.savedPitch)
+    camera.setRoll(preview.savedRoll)
+end
+
+startPreview = function(kind)
+    if active then return end -- don't fight the real inventory camera
+
+    if not preview.active then
+        preview.savedMode = camera.getMode()
+        preview.savedYaw = camera.getYaw()
+        preview.savedPitch = camera.getPitch()
+        preview.savedRoll = camera.getRoll()
+        preview.savedDistance = camera.getThirdPersonDistance()
+
+        I.Camera.disableModeControl(previewTag)
+        I.Camera.disableThirdPersonOffsetControl(previewTag)
+        I.Camera.disableZoom(previewTag)
+        I.Camera.disableStandingPreview(previewTag)
+
+        camera.setMode(camera.MODE.Preview, true)
+    end
+
+    preview.active = true
+    preview.timeLeft = PREVIEW_DURATION
+
+    local section = (kind == 'start') and settings.start or settings.finish
+
+    local yaw = self.rotation:getYaw() + math.rad(settings.start.yaw)
+    if kind == 'finish' then
+        yaw = yaw + math.rad(settings.finish.yaw)
+    end
+
+    -- Offsets are intentionally not previewed.
+    camera.setPreferredThirdPersonDistance(section.distance)
+    camera.instantTransition()
+    camera.setYaw(yaw)
+    camera.setPitch(math.rad(section.pitch))
+    camera.setRoll(math.rad(section.roll))
+end
+
+----------------------------------------------------------------------
 -- Events
 ----------------------------------------------------------------------
 
@@ -183,16 +330,67 @@ local function onUiModeChanged(data)
     local leavingInventory = data.oldMode == 'Interface' and data.newMode ~= 'Interface'
 
     if enteringInventory then
-        for window, required in pairs(settings.cam.requiredWindows) do
-            if required and not I.UI.isWindowVisible(window) then
-                return
-            end
-        end
         enterInventoryView()
     elseif leavingInventory then
         exitInventoryView()
     elseif active then
         exitInventoryView()
+    end
+end
+
+----------------------------------------------------------------------
+-- Save/load
+----------------------------------------------------------------------
+-- Persists the pre-inventory camera snapshot so a save made while the
+-- inventory camera override is active restores correctly on load, and so a
+-- script reload (e.g. after updating the mod) doesn't lose track of it.
+
+local function modeToName(mode)
+    for name, value in pairs(camera.MODE) do
+        if value == mode then return name end
+    end
+    return nil
+end
+
+local function onSave()
+    if preview.active then endPreview() end
+
+    if not active then
+        return { active = false }
+    end
+
+    return {
+        active = true,
+        mode = modeToName(savedMode),
+        yaw = savedYaw,
+        pitch = savedPitch,
+        roll = savedRoll,
+        offsetX = savedOffset.x,
+        offsetY = savedOffset.y,
+        distance = savedDistance,
+    }
+end
+
+local function onLoad(data)
+    data = data or {}
+    pan.running = false
+    preview.active = false
+
+    active = data.active or false
+    if active then
+        savedMode = (data.mode and camera.MODE[data.mode]) or camera.MODE.FirstPerson
+        savedYaw = data.yaw or 0
+        savedPitch = data.pitch or 0
+        savedRoll = data.roll or 0
+        savedOffset = v2(data.offsetX or 0, data.offsetY or 0)
+        savedDistance = data.distance or camera.getThirdPersonDistance()
+    else
+        savedMode = camera.getMode()
+        savedYaw = camera.getYaw()
+        savedPitch = camera.getPitch()
+        savedRoll = camera.getRoll()
+        savedOffset = camera.getFocalPreferredOffset()
+        savedDistance = camera.getThirdPersonDistance()
     end
 end
 
@@ -202,5 +400,8 @@ return {
     },
     engineHandlers = {
         onUpdate = onUpdate,
+        onInit = onLoad,
+        onSave = onSave,
+        onLoad = onLoad,
     },
 }
