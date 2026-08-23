@@ -1,0 +1,54 @@
+page_name: Inventory Camera
+page_desc: Switches to a third-person camera facing your character whenever you open the inventory.
+
+cameraSettings_name: Camera Settings
+person_name: Enable for...
+person_first: First Person
+person_third: Third Person
+requiredWindows_name: Required Windows
+requiredWindows_desc: Camera will switch only if all selected windows are present.
+requiredWindows_inventory: Inventory
+requiredWindows_stats: Stats
+requiredWindows_magic: Magic
+requiredWindows_map: Map
+smoothPanning_name: Smooth Camera Panning
+smoothPanning_desc: |
+  If enabled, the camera will gradually ease into position. Applies for opening inventory from any person, but closing only in third.
+  
+  !! Requires a mod that unpauses the inventory !!
+  
+  If disabled, the camera will instantly snap into its position.
+disableInCombat_name: Disable Mod While in Combat
+panDuration_name: Pan Duration (sec)
+yawPanDirection_name: Rotation Direction
+yawPanDirection_desc: Which way the camera swings around your character while panning to face it. Only matters if "Smooth Camera Panning" is enabled.
+yawPanDirection_auto: Auto (shortest)
+yawPanDirection_CW: Clockwise
+yawPanDirection_CCW: Counter-clockwise
+yawPanDirection_random: Random
+restoreOnClose_name: Restore Previous Camera on Inventory Close
+restoreOnClose_desc: When closing the inventory, return the camera to whatever mode/rotation it had before.
+
+startingPosition_name: Starting Position
+startingPosition_desc: Ignored if "Smooth Camera Panning" is disabled.
+destination_name: Final Position
+distance_name: Distance from the Player
+pitch_name: Pitch
+pitch_desc: Vertical camera angle.
+pitch_up: Up
+pitch_down: Down
+yaw_name: Yaw
+yaw_desc: Horizontal camera angle.
+yaw_left: Left
+yaw_right: Right
+roll_name: Roll
+roll_desc: Tilts the camera around its forward axis.
+roll_CW: Clockwise
+roll_CCW: Counter-clockwise
+fov_name: Field of View Override
+horizontalOffset_name: Horizontal Offset
+horizontalOffset_left: Left
+horizontalOffset_right: Right
+verticalOffset_name: Vertical Offset
+verticalOffset_down: Down
+verticalOffset_up: Up

@@ -1,1 +1,6 @@
+MENU: scripts/InventoryCamera/utils/sorresRenderers.lua
+MENU: scripts/InventoryCamera/utils/SuperSlider6.lua
+
+MENU: scripts/InventoryCamera/settingsMenu.lua
+
 PLAYER: scripts/InventoryCamera/player.lua
