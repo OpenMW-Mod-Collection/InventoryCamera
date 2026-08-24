@@ -2,8 +2,6 @@
 
 Open your inventory with style!
 
-At this point [Inventory Extender](https://www.nexusmods.com/morrowind/mods/59205) is not leaving my load order anytime soon. And while the paper doll was a questionable UX decision, it was undoubtedly stylish. Additionally I noticed how my now vertical inventory layout had a perfect gap for something else.
-
 <div align="center">
 
 <img src="media/demo1.gif" alt="demo1">
