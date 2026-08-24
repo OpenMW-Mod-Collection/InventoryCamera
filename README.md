@@ -16,6 +16,10 @@ Open your inventory with style!
 
 *Drinking animations from [Consuming Animated](https://www.nexusmods.com/morrowind/mods/59069). Third person camera moves back into its position.*
 
+<img src="media/demo4.gif" alt="demo4">
+
+*You when using this mod.*
+
 </div>
 
 ## Requirements
