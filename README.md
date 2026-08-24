@@ -18,7 +18,7 @@ Open your inventory with style!
 
 <img src="media/demo4.gif" alt="demo4">
 
-*You when using this mod.*
+*How it feels to use this mod.*
 
 </div>
 
