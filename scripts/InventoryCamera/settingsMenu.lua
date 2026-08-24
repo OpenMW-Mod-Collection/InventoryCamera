@@ -23,6 +23,7 @@ I.Settings.registerGroup {
         {
             key = "person",
             name = "person_name",
+            description = "person_desc",
             renderer = "multiselect",
             default = {
                 first = true,
@@ -47,20 +48,17 @@ I.Settings.registerGroup {
             renderer = "multiselect",
             default = {
                 firstIn  = true,
-                firstOut = false,
                 thirdIn  = true,
                 thirdOut = true,
             },
             argument = {
                 keys = {
                     "firstIn",
-                    "firstOut",
                     "thirdIn",
                     "thirdOut",
                 },
                 aliases = {
                     firstIn  = l10n("smoothPanning_firstIn"),
-                    firstOut = l10n("smoothPanning_firstOut"),
                     thirdIn  = l10n("smoothPanning_thirdIn"),
                     thirdOut = l10n("smoothPanning_thirdOut"),
                 },

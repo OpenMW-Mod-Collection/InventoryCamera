@@ -3,6 +3,9 @@ page_desc: Switches to a third-person camera facing your character whenever you 
 
 cameraSettings_name: Camera Settings
 person_name: Enable for...
+person_desc: >
+  Due to engine scripts overriding camera controls,
+  the mod won't work in third person when you're in combat or magic stance.
 person_first: First Person
 person_third: Third Person
 smoothPanning_name: Smooth Camera Panning
@@ -13,7 +16,6 @@ smoothPanning_desc: |
   
   If disabled, the camera will instantly snap into its position.
 smoothPanning_firstIn: First Person, In
-smoothPanning_firstOut: First Person, Out
 smoothPanning_thirdIn: Third Person, In
 smoothPanning_thirdOut: Third Person, Out
 panDuration_name: Pan Duration (sec)
@@ -27,7 +29,10 @@ restoreOnClose_name: Restore Previous Camera on Inventory Close
 restoreOnClose_desc: When closing the inventory, return the camera to whatever mode/rotation it had before.
 
 startingPosition_name: Starting Position
-startingPosition_desc: Ignored if "Smooth Camera Panning" is disabled.
+startingPosition_desc: |
+  Ignored if "Smooth Camera Panning" is disabled.
+
+  Ignored in third person. Your actual camera position will be used instead.
 destination_name: Final Position
 distance_name: Distance from the Player
 pitch_name: Pitch
