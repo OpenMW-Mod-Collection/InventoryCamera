@@ -33,6 +33,8 @@ This mod is compatible with effectively anything. Treat it as a "third person ca
 Confirmed to be compatible with:
 
 - [Rock the Boat](https://www.nexusmods.com/morrowind/mods/59338)
+- [Devilish Alcohol Overhaul](https://www.nexusmods.com/morrowind/mods/55038) version 2.1 or newer
+- [Devilish Touch of Madness](https://www.nexusmods.com/morrowind/mods/59337) version 1.9 or newer
 
 ## Recommended Mods
 
