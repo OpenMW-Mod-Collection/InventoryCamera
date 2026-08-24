@@ -2,7 +2,6 @@
 ---@omw-context menu
 local I = require('openmw.interfaces')
 local core = require("openmw.core")
-local auxUtil = require("openmw_aux.util")
 
 local l10n = core.l10n("InventoryCamera")
 
@@ -38,21 +37,35 @@ I.Settings.registerGroup {
                     first = l10n("person_first"),
                     third = l10n("person_third"),
                 },
-                buttonWidth = 100,
+                buttonWidth = 135,
             }
-        },
-        {
-            key = "disableInCombat",
-            name = "disableInCombat_name",
-            renderer = "checkbox",
-            default = false,
         },
         {
             key = "smoothPanning",
             name = "smoothPanning_name",
             description = "smoothPanning_desc",
-            renderer = "checkbox",
-            default = true,
+            renderer = "multiselect",
+            default = {
+                firstIn  = true,
+                firstOut = false,
+                thirdIn  = true,
+                thirdOut = true,
+            },
+            argument = {
+                keys = {
+                    "firstIn",
+                    "firstOut",
+                    "thirdIn",
+                    "thirdOut",
+                },
+                aliases = {
+                    firstIn  = l10n("smoothPanning_firstIn"),
+                    firstOut = l10n("smoothPanning_firstOut"),
+                    thirdIn  = l10n("smoothPanning_thirdIn"),
+                    thirdOut = l10n("smoothPanning_thirdOut"),
+                },
+                buttonWidth = 135,
+            }
         },
         {
             key = "panDuration",
@@ -89,107 +102,121 @@ I.Settings.registerGroup {
     },
 }
 
-local positionSettings = {
-    {
-        key = "distance",
-        name = "distance_name",
-        renderer = "SuperSlider6",
-        default = 250,
-        argument = {
-            min = 0,
-            max = 750,
-            step = 1,
-            stepAffectsTextInput = false,
-            default = 250,
-            bottomRow = false,
+---@class PositionDefaults
+---@field distance number | nil
+---@field pitch number | nil
+---@field yaw number | nil
+---@field roll number | nil
+---@field vOffset number | nil
+---@field hOffset number | nil
+
+---@param defaults PositionDefaults
+---@return table
+local function newPosSettings(defaults)
+    return {
+        {
+            key = "distance",
+            name = "distance_name",
+            renderer = "SuperSlider6",
+            default = defaults.distance or 250,
+            argument = {
+                min = 0,
+                max = 750,
+                step = 1,
+                stepAffectsTextInput = false,
+                default = defaults.distance or 250,
+                bottomRow = true,
+                showResetButton = true,
+            },
         },
-    },
-    {
-        key = "pitch",
-        name = "pitch_name",
-        description = "pitch_desc",
-        renderer = "SuperSlider6",
-        default = 0,
-        argument = {
-            min = -180,
-            max = 180,
-            step = 1,
-            stepAffectsTextInput = false,
-            default = 0,
-            bottomRow = false,
-            minLabel = l10n("pitch_up"),
-            maxLabel = l10n("pitch_down"),
-            unit = "°",
+        {
+            key = "pitch",
+            name = "pitch_name",
+            description = "pitch_desc",
+            renderer = "SuperSlider6",
+            default = defaults.pitch or 0,
+            argument = {
+                min = -180,
+                max = 180,
+                step = 1,
+                stepAffectsTextInput = false,
+                default = defaults.pitch or 0,
+                bottomRow = true,
+                unit = "°",
+                showResetButton = true,
+            },
         },
-    },
-    {
-        key = "yaw",
-        name = "yaw_name",
-        description = "yaw_desc",
-        renderer = "SuperSlider6",
-        default = 0,
-        argument = {
-            min = -180,
-            max = 180,
-            step = 1,
-            stepAffectsTextInput = false,
-            default = 0,
-            bottomRow = false,
-            minLabel = l10n("yaw_left"),
-            maxLabel = l10n("yaw_right"),
-            unit = "°",
+        {
+            key = "yaw",
+            name = "yaw_name",
+            description = "yaw_desc",
+            renderer = "SuperSlider6",
+            default = defaults.yaw or 0,
+            argument = {
+                min = -180,
+                max = 180,
+                step = 1,
+                stepAffectsTextInput = false,
+                default = defaults.yaw or 0,
+                bottomRow = true,
+                unit = "°",
+                showResetButton = true,
+            },
         },
-    },
-    {
-        key = "roll",
-        name = "roll_name",
-        renderer = "SuperSlider6",
-        default = 0,
-        argument = {
-            min = -180,
-            max = 180,
-            step = 1,
-            stepAffectsTextInput = false,
-            default = 0,
-            bottomRow = false,
-            minLabel = l10n("roll_CW"),
-            maxLabel = l10n("roll_CCW"),
-            unit = "°",
+        {
+            key = "roll",
+            name = "roll_name",
+            renderer = "SuperSlider6",
+            default = defaults.roll or 0,
+            argument = {
+                min = -180,
+                max = 180,
+                step = 1,
+                stepAffectsTextInput = false,
+                default = defaults.roll or 0,
+                bottomRow = true,
+                unit = "°",
+                showResetButton = true,
+            },
         },
-    },
-    {
-        key = "horizontalOffset",
-        name = "horizontalOffset_name",
-        renderer = "SuperSlider6",
-        default = 0,
-        argument = {
-            min = -250,
-            max = 250,
-            step = 1,
-            stepAffectsTextInput = false,
-            default = 0,
-            bottomRow = false,
-            minLabel = l10n("horizontalOffset_left"),
-            maxLabel = l10n("horizontalOffset_right"),
+        {
+            key = "horizontalOffset",
+            name = "horizontalOffset_name",
+            description = "horizontalOffset_desc",
+            renderer = "SuperSlider6",
+            default = defaults.hOffset or 0,
+            argument = {
+                min = -250,
+                max = 250,
+                step = 1,
+                stepAffectsTextInput = false,
+                default = defaults.hOffset or 0,
+                bottomRow = true,
+                minLabel = l10n("horizontalOffset_left"),
+                maxLabel = l10n("horizontalOffset_right"),
+                showResetButton = true,
+            },
         },
-    },
-    {
-        key = "verticalOffset",
-        name = "verticalOffset_name",
-        renderer = "SuperSlider6",
-        default = 0,
-        argument = {
-            min = -250,
-            max = 250,
-            step = 1,
-            stepAffectsTextInput = false,
-            default = 0,
-            bottomRow = false,
-            minLabel = l10n("verticalOffset_down"),
-            maxLabel = l10n("verticalOffset_up"),
+        {
+            key = "verticalOffset",
+            name = "verticalOffset_name",
+            description = "verticalOffset_desc",
+            renderer = "SuperSlider6",
+            default = defaults.vOffset or 0,
+            argument = {
+                min = -250,
+                max = 250,
+                step = 1,
+                stepAffectsTextInput = false,
+                default = defaults.vOffset or 0,
+                bottomRow = true,
+                minLabel = l10n("verticalOffset_down"),
+                maxLabel = l10n("verticalOffset_up"),
+                showResetButton = true,
+            },
         },
-    },
-}
+    }
+end
 
 I.Settings.registerGroup {
     key = 'SettingsInventoryCamera_startingPosition',
@@ -199,7 +226,14 @@ I.Settings.registerGroup {
     description = "startingPosition_desc",
     order = 10,
     permanentStorage = true,
-    settings = auxUtil.shallowCopy(positionSettings)
+    settings = newPosSettings {
+        distance = 100,
+        pitch = -10,
+        yaw = 20,
+        roll = -10,
+        hOffset = 0,
+        vOffset = -80,
+    }
 }
 
 I.Settings.registerGroup {
@@ -209,5 +243,12 @@ I.Settings.registerGroup {
     name = "destination_name",
     order = 11,
     permanentStorage = true,
-    settings = auxUtil.shallowCopy(positionSettings)
+    settings = newPosSettings {
+        distance = 80,
+        pitch = 10,
+        yaw = 150,
+        roll = -3,
+        hOffset = -38,
+        vOffset = -25,
+    }
 }

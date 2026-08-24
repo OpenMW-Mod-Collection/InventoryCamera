@@ -12,7 +12,10 @@ smoothPanning_desc: |
   !! Requires a mod that unpauses the inventory !!
   
   If disabled, the camera will instantly snap into its position.
-disableInCombat_name: Disable Mod While in Combat
+smoothPanning_firstIn: First Person, In
+smoothPanning_firstOut: First Person, Out
+smoothPanning_thirdIn: Third Person, In
+smoothPanning_thirdOut: Third Person, Out
 panDuration_name: Pan Duration (sec)
 yawPanDirection_name: Rotation Direction
 yawPanDirection_desc: Which way the camera swings around your character while panning to face it. Only matters if "Smooth Camera Panning" is enabled.
@@ -29,20 +32,15 @@ destination_name: Final Position
 distance_name: Distance from the Player
 pitch_name: Pitch
 pitch_desc: Vertical camera angle.
-pitch_up: Up
-pitch_down: Down
 yaw_name: Yaw
 yaw_desc: Horizontal camera angle.
-yaw_left: Left
-yaw_right: Right
 roll_name: Roll
 roll_desc: Tilts the camera around its forward axis.
-roll_CW: Clockwise
-roll_CCW: Counter-clockwise
-fov_name: Field of View Override
 horizontalOffset_name: Horizontal Offset
+horizontalOffset_desc: Sadly, it doesn't appear in the settings preview.
 horizontalOffset_left: Left
 horizontalOffset_right: Right
 verticalOffset_name: Vertical Offset
+verticalOffset_desc: Sadly, it doesn't appear in the settings preview.
 verticalOffset_down: Down
 verticalOffset_up: Up

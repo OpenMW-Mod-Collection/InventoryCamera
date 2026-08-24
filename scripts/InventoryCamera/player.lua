@@ -17,7 +17,7 @@ local previewTag = namespace .. "Preview"
 -- can reference startPreview)
 ----------------------------------------------------------------------
 
-local PREVIEW_DURATION = 3
+local PREVIEW_DURATION = 0.1
 
 -- Forward-declared; assigned further down once camera helpers exist.
 local startPreview
@@ -27,21 +27,19 @@ local preview
 local settings = {
     cam = settingsCache.new(
         storage.playerSection("SettingsInventoryCamera_camera"),
-        async,
-        function(key) -- my subscribe callback
-        end
+        async
     ),
     start = settingsCache.new(
         storage.playerSection("SettingsInventoryCamera_startingPosition"),
         async,
-        function(key)
+        function()
             if startPreview then startPreview('start') end
         end
     ),
     finish = settingsCache.new(
         storage.playerSection("SettingsInventoryCamera_destination"),
         async,
-        function(key)
+        function()
             if startPreview then startPreview('finish') end
         end
     ),
@@ -151,6 +149,47 @@ local function onUpdate(dt)
     end
 end
 
+local function computeStartState(firstPerson)
+    if firstPerson then
+        return {
+            yaw = self.rotation:getYaw() + math.rad(settings.start.yaw),
+            pitch = math.rad(settings.start.pitch),
+            roll = math.rad(settings.start.roll),
+            distance = settings.start.distance,
+            offset = v2(settings.start.horizontalOffset, settings.start.verticalOffset),
+        }
+    else
+        -- Third person: start exactly where the camera already is
+        return {
+            yaw = savedYaw,
+            pitch = savedPitch,
+            roll = savedRoll,
+            distance = savedDistance,
+            offset = savedOffset,
+        }
+    end
+end
+
+local function computeTargetState()
+    -- Finish state is always actor-relative, so first/third person converge
+    -- on the same final pose regardless of where they started.
+    return {
+        yaw = self.rotation:getYaw() + math.rad(settings.finish.yaw),
+        pitch = math.rad(settings.finish.pitch),
+        roll = math.rad(settings.finish.roll),
+        distance = settings.finish.distance,
+        offset = v2(settings.finish.horizontalOffset, settings.finish.verticalOffset),
+    }
+end
+
+local function applyCameraState(state)
+    camera.setYaw(state.yaw)
+    camera.setPitch(state.pitch)
+    camera.setRoll(state.roll)
+    camera.setPreferredThirdPersonDistance(state.distance)
+    camera.setFocalPreferredOffset(state.offset)
+end
+
 local function enterInventoryView()
     if active then return end
     if preview.active then endPreview() end
@@ -179,45 +218,26 @@ local function enterInventoryView()
     end
 
     camera.setMode(camera.MODE.Preview, true)
-    local startYaw = firstPersonCheck
-        and self.rotation:getYaw() + math.rad(settings.start.yaw)
-        or self.rotation:getYaw() - camera.getYaw() -- BROKEN
-    if firstPersonCheck then
-        camera.setFocalPreferredOffset(v2(
-            settings.start.horizontalOffset,
-            settings.start.verticalOffset
-        ))
-        camera.setPreferredThirdPersonDistance(settings.start.distance)
-        camera.setYaw(startYaw)
-        camera.setPitch(math.rad(settings.start.pitch))
-        camera.setRoll(math.rad(settings.start.roll))
-    end
-    camera.instantTransition()
 
-    -- Destination values: the pan target for all of yaw/pitch/roll/distance/
-    -- offset, tweened below (manually, not relying on the engine's own
-    -- offset smoothing) when smooth panning is on.
-    local targetYaw = startYaw + math.rad(settings.finish.yaw)
-    local targetPitch = math.rad(settings.finish.pitch)
-    local targetRoll = math.rad(settings.finish.roll)
-    local targetDistance = settings.finish.distance
-    local targetOffset = v2(settings.finish.horizontalOffset, settings.finish.verticalOffset)
-    local startDistance = firstPersonCheck
-        and settings.start.distance
-        or savedDistance
-    local startOffset = firstPersonCheck
-        and v2(settings.start.horizontalOffset, settings.start.verticalOffset)
-        or savedOffset
+    local startState = computeStartState(firstPersonCheck)
+    local targetState = computeTargetState()
+
+    if firstPersonCheck then
+        -- Third person doesn't need this: the camera is already sitting at
+        -- startState by definition, so there's nothing to snap to.
+        applyCameraState(startState)
+        camera.instantTransition()
+    end
 
     if settings.cam.smoothPanning then
-        startPan(targetYaw, targetPitch, targetRoll, startDistance, targetDistance, startOffset, targetOffset)
+        startPan(
+            targetState.yaw, targetState.pitch, targetState.roll,
+            startState.distance, targetState.distance,
+            startState.offset, targetState.offset
+        )
     else
         pan.running = false
-        camera.setYaw(targetYaw)
-        camera.setPitch(targetPitch)
-        camera.setRoll(targetRoll)
-        camera.setPreferredThirdPersonDistance(targetDistance)
-        camera.setFocalPreferredOffset(targetOffset)
+        applyCameraState(targetState)
         camera.instantTransition()
     end
 end
