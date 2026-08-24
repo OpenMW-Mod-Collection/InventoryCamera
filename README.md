@@ -2,7 +2,7 @@
 
 Open your inventory with style!
 
-At this point [Inventory Extender](https://www.nexusmods.com/morrowind/mods/59205) is not leaving my load order anytime soon. And while the paper doll was a questionable UX decision, it was undoubtably stylish. Additionally I noticed how my now vertical inventory layout had a perfect gap for something else.
+At this point [Inventory Extender](https://www.nexusmods.com/morrowind/mods/59205) is not leaving my load order anytime soon. And while the paper doll was a questionable UX decision, it was undoubtedly stylish. Additionally I noticed how my now vertical inventory layout had a perfect gap for something else.
 
 <div align="center">
 
@@ -34,7 +34,7 @@ Confirmed to be compatible with:
 
 ## Recommended Mods
 
-- [Inventory Extender](https://www.nexusmods.com/morrowind/mods/59205) - Along with many wonderful things, this mod removes the paper doll. And seeing both youself and your paper doll doesn't make much sense to me
+- [Inventory Extender](https://www.nexusmods.com/morrowind/mods/59205) - Along with many wonderful things, this mod removes the paper doll. And seeing both yourself and your paper doll doesn't make much sense to me
 - [Dynamic Actors](https://www.nexusmods.com/morrowind/mods/54782) and [Dynamic Animations](https://www.nexusmods.com/morrowind/mods/57633) - Enhanced idle animations
 - [Consuming Animated](https://www.nexusmods.com/morrowind/mods/59069) - New animations for mundane actions
 - [Voice of the Nerevarine](https://www.nexusmods.com/morrowind/mods/59486) - Banter while digging through your luggage
