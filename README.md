@@ -48,7 +48,7 @@ The same issue as the one above ^.
 
 ### The camera snaps a little at the end of the animation
 
-This is a mod conflict on the other mods' side. Basically they might override camera rotation (usually Roll) every frame due an oversight in logic - they set it to 0 every time even when they shouldn't do anything. Check "Compatility" section for any potential culprits.
+This is a mod conflict on the other mods' side. Basically they might override camera rotation (usually Roll) every frame due an oversight in logic - they set it to 0 every time even when they shouldn't do anything. Check "Compatibility" section for any potential culprits.
 
 As a temporary measure you can set each rotation value to 0 one by one to see which one is problematic (usually it's Roll). Then leave them at 0 so that they will stay the same during the camera movement and consistent with the mod that overrides them.
 
