@@ -36,6 +36,22 @@ Confirmed to be compatible with:
 - [Devilish Alcohol Overhaul](https://www.nexusmods.com/morrowind/mods/55038) version 2.1 or newer
 - [Devilish Touch of Madness](https://www.nexusmods.com/morrowind/mods/59337) version 1.9 or newer
 
+## FAQ / Troubleshooting
+
+### The camera freezes in place when opening inventory
+
+This means your inventory is paused (you don't have UI unpauser installed or enabled) and you have Smooth Panning option enabled. Either install the unpauser or disable Smooth Panning.
+
+### Horizontal/Vertical Offset settings don't work
+
+The same issue as the one above ^.
+
+### The camera snaps a little at the end of the animation
+
+This is a mod conflict on the other mods' side. Basically they might override camera rotation (usually Roll) every frame due an oversight in logic - they set it to 0 every time even when they shouldn't do anything. Check "Compatility" section for any potential culprits.
+
+As a temporary measure you can set each rotation value to 0 one by one to see which one is problematic (usually it's Roll). Then leave them at 0 so that they will stay the same during the camera movement and consistent with the mod that overrides them.
+
 ## Recommended Mods
 
 - [Inventory Extender](https://www.nexusmods.com/morrowind/mods/59205) - Along with many wonderful things, this mod removes the paper doll. And seeing both yourself and your paper doll doesn't make much sense to me
