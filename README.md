@@ -40,7 +40,7 @@ Confirmed to be compatible with:
 
 ### The camera freezes in place when opening inventory
 
-This means your inventory is paused (you don't have UI unpauser installed or enabled) and you have Smooth Panning option enabled. Either install the unpauser or disable Smooth Panning.
+This means your inventory is paused (you don't have inventory unpauser installed or enabled) and you have Smooth Panning option enabled. Either install the unpauser or disable Smooth Panning.
 
 ### Horizontal/Vertical Offset settings don't work
 
