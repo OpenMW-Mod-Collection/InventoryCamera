@@ -246,7 +246,7 @@ I.Settings.registerGroup {
         pitch = 10,
         yaw = 150,
         roll = -3,
-        hOffset = -38,
+        hOffset = -35,
         vOffset = -25,
     }
 }
