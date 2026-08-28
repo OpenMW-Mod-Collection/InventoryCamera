@@ -27,6 +27,13 @@ yawPanDirection_CCW: Counter-clockwise
 yawPanDirection_random: Random
 restoreOnClose_name: Restore Previous Camera on Inventory Close
 restoreOnClose_desc: When closing the inventory, return the camera to whatever mode/rotation it had before.
+antiPreviewKey_name: Disable Camera Change While ___ Key is Held
+antiPreviewKey_desc: Opening inventory while holding this key won't trigger the camera change.
+shift: Shift
+ctrl: Ctrl
+alt: Alt
+none: None
+skipDuringCombat_name: Disable Camera Change While in Combat
 
 startingPosition_name: Starting Position
 startingPosition_desc: |

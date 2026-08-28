@@ -52,12 +52,17 @@ This is a mod conflict on the other mods' side. Basically they might override ca
 
 As a temporary measure you can set each rotation value to 0 one by one to see which one is problematic (usually it's Roll). Then leave them at 0 so that they will stay the same during the camera movement and consistent with the mod that overrides them.
 
+### The camera doesn't change its position in 3rd person while in combat/magic stance
+
+From what I can tell, it's a conflict with a builtin OpenMW Camera lua module. Basically Inventory Camera gets overriden in those two stances. I will see if anything can be done regarding it, but I won't promise anything.
+
 ## Recommended Mods
 
 - [Inventory Extender](https://www.nexusmods.com/morrowind/mods/59205) - Along with many wonderful things, this mod removes the paper doll. And seeing both yourself and your paper doll doesn't make much sense to me
 - [Dynamic Actors](https://www.nexusmods.com/morrowind/mods/54782) and [Dynamic Animations](https://www.nexusmods.com/morrowind/mods/57633) - Enhanced idle animations
 - [Consuming Animated](https://www.nexusmods.com/morrowind/mods/59069) - New animations for mundane actions
 - [Voice of the Nerevarine](https://www.nexusmods.com/morrowind/mods/59486) - Banter while digging through your luggage
+- [Perfect Placement](https://www.nexusmods.com/morrowind/mods/46562) - Since most of the time camera will be rotated towards you, dropping items in specific places without this mod might become an issue
 
 ## Credits
 

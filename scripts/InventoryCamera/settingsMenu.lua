@@ -97,6 +97,28 @@ I.Settings.registerGroup {
             renderer = "checkbox",
             default = true,
         },
+        {
+            key = "antiPreviewKey",
+            name = "antiPreviewKey_name",
+            description = "antiPreviewKey_desc",
+            renderer = "select",
+            default = "shift",
+            argument = {
+                l10n = "InventoryCamera",
+                items = {
+                    "shift",
+                    "ctrl",
+                    "alt",
+                    "none"
+                },
+            }
+        },
+        {
+            key = "skipDuringCombat",
+            name = "skipDuringCombat_name",
+            renderer = "checkbox",
+            default = true,
+        },
     },
 }
 

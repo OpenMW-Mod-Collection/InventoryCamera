@@ -4,3 +4,4 @@ MENU: scripts/InventoryCamera/utils/SuperSlider6.lua
 MENU: scripts/InventoryCamera/settingsMenu.lua
 
 PLAYER: scripts/InventoryCamera/player.lua
+GLOBAL: scripts/InventoryCamera/global.lua
