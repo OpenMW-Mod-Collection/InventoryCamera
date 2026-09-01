@@ -71,8 +71,13 @@ function M.enter()
 
     local currCamMode = camera.getMode()
     local firstPersonCheck = currCamMode == camera.MODE.FirstPerson and settings.cam.person.first
-    local thirdPersonCheck = currCamMode == camera.MODE.Preview and settings.cam.person.third
+    local thirdPersonCheck = currCamMode ~= camera.MODE.FirstPerson and settings.cam.person.third
     if not firstPersonCheck and not thirdPersonCheck then
+        return
+    end
+
+    local paused = core.isWorldPaused()
+    if paused and settings.cam.ifPaused == "disable" then
         return
     end
 
@@ -106,8 +111,9 @@ function M.enter()
 
     local smooth = firstPersonCheck and settings.cam.smoothPanning.firstIn
         or settings.cam.smoothPanning.thirdIn
+    local snap = paused and settings.cam.ifPaused == "snap"
 
-    if smooth then
+    if smooth and not snap then
         pan.start(
             targetState.yaw, targetState.pitch, targetState.roll,
             startState.distance, targetState.distance,
@@ -129,11 +135,6 @@ function M.exit()
     I.Camera.enableThirdPersonOffsetControl(namespace)
     I.Camera.enableZoom(namespace)
     I.Camera.enableStandingPreview(namespace)
-
-    if not settings.cam.restoreOnClose then
-        pan.stop()
-        return
-    end
 
     local isFirstPerson = savedMode == camera.MODE.FirstPerson
     local smooth = isFirstPerson and settings.cam.smoothPanning.firstOut

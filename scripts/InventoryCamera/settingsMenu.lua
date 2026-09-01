@@ -23,7 +23,6 @@ I.Settings.registerGroup {
         {
             key = "person",
             name = "person_name",
-            description = "person_desc",
             renderer = "multiselect",
             default = {
                 first = true,
@@ -78,7 +77,7 @@ I.Settings.registerGroup {
             key = "yawPanDirection",
             name = "yawPanDirection_name",
             description = "yawPanDirection_desc",
-            renderer = "select",
+            renderer = "SuperSelect3",
             default = "yawPanDirection_auto",
             argument = {
                 l10n = "InventoryCamera",
@@ -88,20 +87,14 @@ I.Settings.registerGroup {
                     "yawPanDirection_CCW",
                     "yawPanDirection_random",
                 },
+                width = 150,
             },
-        },
-        {
-            key = "restoreOnClose",
-            name = "restoreOnClose_name",
-            description = "restoreOnClose_desc",
-            renderer = "checkbox",
-            default = true,
         },
         {
             key = "antiPreviewKey",
             name = "antiPreviewKey_name",
             description = "antiPreviewKey_desc",
-            renderer = "select",
+            renderer = "SuperSelect3",
             default = "shift",
             argument = {
                 l10n = "InventoryCamera",
@@ -109,8 +102,9 @@ I.Settings.registerGroup {
                     "shift",
                     "ctrl",
                     "alt",
-                    "none"
+                    "none",
                 },
+                width = 80,
             }
         },
         {
@@ -119,6 +113,35 @@ I.Settings.registerGroup {
             renderer = "checkbox",
             default = true,
         },
+        {
+            key = "ifPaused",
+            name = "ifPaused_name",
+            description = "ifPaused_desc",
+            renderer = "SuperSelect3",
+            default = "disable",
+            argument = {
+                l10n = "InventoryCamera",
+                items = {
+                    "disable",
+                    "snap",
+                },
+                width = 150,
+            }
+        },
+        -- {
+        --     key = "ifPaused",
+        --     name = "ifPaused_name",
+        --     description = "ifPaused_desc",
+        --     renderer = "select",
+        --     default = "disable",
+        --     argument = {
+        --         l10n = "InventoryCamera",
+        --         items = {
+        --             "disable",
+        --             "snap",
+        --         },
+        --     }
+        -- },
     },
 }
 

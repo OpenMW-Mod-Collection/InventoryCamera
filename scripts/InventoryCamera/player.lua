@@ -1,6 +1,7 @@
 ---@omw-context player
 local input = require("openmw.input")
 local self = require("openmw.self")
+local camera = require("openmw.camera")
 
 local settings = require("scripts.InventoryCamera.settings")
 local pan = require("scripts.InventoryCamera.camera.pan")
@@ -58,10 +59,13 @@ return {
         onLoad = save.onLoad,
     },
     eventHandlers = {
-        UiModeChanged = onUiModeChanged,
+        UiModeChanged = function(data)
+            self:sendEvent("InventoryCamera_UiModeChanged", data)
+        end,
         OMWMusicCombatTargetsChanged = combatTracker.OMWMusicCombatTargetsChanged,
+        InventoryCamera_UiModeChanged = onUiModeChanged,
         InventoryCamera_forceLastRotation = function()
             self.rotation = lastSelfRotation or self.rotation
-        end
+        end,
     },
 }

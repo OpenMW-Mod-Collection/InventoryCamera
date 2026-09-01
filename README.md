@@ -24,7 +24,9 @@ Open your inventory with style!
 
 ## Requirements
 
-Smooth Panning and Horizontal/Vertical Offset features require unpaused inventory. My unpauser of choice is [Pause Control](https://modding-openmw.gitlab.io/pause-control/).
+This mod has been designed to be used with unpaused inventory. While it can be used with it fully paused, it's not recommended and I likely won't provide support for issues caused by it.
+
+You are free to use any menu unpausing mods that you like. I personally prefer [Unpause](https://www.nexusmods.com/morrowind/mods/60018).
 
 ## Compatibility
 
@@ -33,28 +35,17 @@ This mod is compatible with effectively anything. Treat it as a "third person ca
 Confirmed to be compatible with:
 
 - [Rock the Boat](https://www.nexusmods.com/morrowind/mods/59338)
+- [Red Mountain Tremors](https://www.nexusmods.com/morrowind/mods/53637)
 - [Devilish Alcohol Overhaul](https://www.nexusmods.com/morrowind/mods/55038) version 2.1 or newer
 - [Devilish Touch of Madness](https://www.nexusmods.com/morrowind/mods/59337) version 1.9 or newer
 
 ## FAQ / Troubleshooting
-
-### The camera freezes in place when opening inventory
-
-This means your inventory is paused (you don't have inventory unpauser installed or enabled) and you have Smooth Panning option enabled. Either install the unpauser or disable Smooth Panning.
-
-### Horizontal/Vertical Offset settings don't work
-
-The same issue as the one above ^.
 
 ### The camera snaps a little at the end of the animation
 
 This is a mod conflict on the other mods' side. Basically they might override camera rotation (usually Roll) every frame due an oversight in logic - they set it to 0 every time even when they shouldn't do anything. Check "Compatibility" section for any potential culprits.
 
 As a temporary measure you can set each rotation value to 0 one by one to see which one is problematic (usually it's Roll). Then leave them at 0 so that they will stay the same during the camera movement and consistent with the mod that overrides them.
-
-### The camera doesn't change its position in 3rd person while in combat/magic stance
-
-From what I can tell, it's a conflict with a builtin OpenMW Camera lua module. Basically Inventory Camera gets overriden in those two stances. I will see if anything can be done regarding it, but I won't promise anything.
 
 ## Recommended Mods
 

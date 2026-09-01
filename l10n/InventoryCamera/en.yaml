@@ -1,39 +1,39 @@
 page_name: Inventory Camera
-page_desc: Switches to a third-person camera facing your character whenever you open the inventory.
+page_desc: |
+  Switches to a third-person camera facing your character whenever you open the inventory.
+
+  Intended to be used together together with some sort of unpaused inventory mod.
 
 cameraSettings_name: Camera Settings
-person_name: Enable for...
-person_desc: >
-  Due to engine scripts overriding camera controls,
-  the mod won't work in third person when you're in combat or magic stance.
+person_name: Active In
 person_first: First Person
 person_third: Third Person
-smoothPanning_name: Smooth Camera Panning
-smoothPanning_desc: |
-  If enabled, the camera will gradually ease into position. Applies for opening inventory from any person, but closing only in third.
-  
-  !! Requires a mod that unpauses the inventory !!
-  
-  If disabled, the camera will instantly snap into its position.
+smoothPanning_name: Smooth Panning
+smoothPanning_desc: Eases the camera into place instead of snapping instantly.
 smoothPanning_firstIn: First Person, In
 smoothPanning_thirdIn: Third Person, In
 smoothPanning_thirdOut: Third Person, Out
 panDuration_name: Pan Duration (sec)
 yawPanDirection_name: Rotation Direction
-yawPanDirection_desc: Which way the camera swings around your character while panning to face it. Only matters if "Smooth Camera Panning" is enabled.
+yawPanDirection_desc: |
+  Swing direction while panning.
+  
+  Requires "Smooth Panning" to be enabled.
 yawPanDirection_auto: Auto (shortest)
 yawPanDirection_CW: Clockwise
-yawPanDirection_CCW: Counter-clockwise
+yawPanDirection_CCW: Counter-CW
 yawPanDirection_random: Random
-restoreOnClose_name: Restore Previous Camera on Inventory Close
-restoreOnClose_desc: When closing the inventory, return the camera to whatever mode/rotation it had before.
-antiPreviewKey_name: Disable Camera Change While ___ Key is Held
-antiPreviewKey_desc: Opening inventory while holding this key won't trigger the camera change.
+antiPreviewKey_name: Suppress Camera Change Key
+antiPreviewKey_desc: Opening inventory with this key held skips the camera change.
 shift: Shift
 ctrl: Ctrl
 alt: Alt
 none: None
-skipDuringCombat_name: Disable Camera Change While in Combat
+skipDuringCombat_name: Disable During Combat
+ifPaused_name: If Inventory Paused
+ifPaused_desc: "Note: Horizontal and Vertical Offsets work only with unpaused inventory."
+disable: Do Nothing
+snap: Snap Instantly
 
 startingPosition_name: Starting Position
 startingPosition_desc: |
@@ -49,10 +49,10 @@ yaw_desc: Horizontal camera angle.
 roll_name: Roll
 roll_desc: Tilts the camera around its forward axis.
 horizontalOffset_name: Horizontal Offset
-horizontalOffset_desc: Sadly, it doesn't appear in the settings preview.
+horizontalOffset_desc: Doesn't work while the game is paused.
 horizontalOffset_left: Left
 horizontalOffset_right: Right
 verticalOffset_name: Vertical Offset
-verticalOffset_desc: Sadly, it doesn't appear in the settings preview.
+verticalOffset_desc: Doesn't work while the game is paused.
 verticalOffset_down: Down
 verticalOffset_up: Up
