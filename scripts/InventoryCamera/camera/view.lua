@@ -5,8 +5,6 @@ local camera = require('openmw.camera')
 local util = require('openmw.util')
 local v2 = util.vector2
 local I = require('openmw.interfaces')
-local core = require("openmw.core")
-
 local pan = require("scripts.InventoryCamera.camera.pan")
 local settings = require("scripts.InventoryCamera.settings")
 
@@ -76,11 +74,6 @@ function M.enter()
         return
     end
 
-    local paused = core.isWorldPaused()
-    if paused and settings.cam.ifPaused == "disable" then
-        return
-    end
-
     M.active = true
     savedMode = currCamMode
     savedYaw = camera.getYaw()
@@ -89,13 +82,15 @@ function M.enter()
     savedOffset = camera.getFocalPreferredOffset()
     savedDistance = camera.getThirdPersonDistance()
 
-    if firstPersonCheck then
-        -- Stop the built-in camera script from fighting us while the menu is open
-        I.Camera.disableModeControl(namespace)
-        I.Camera.disableThirdPersonOffsetControl(namespace)
-        I.Camera.disableZoom(namespace)
-        I.Camera.disableStandingPreview(namespace)
-    end
+    -- Stop the built-in camera script from fighting us while the menu is
+    -- open. This must happen regardless of entry mode: in Preview mode the
+    -- built-in third-person script still runs its own offset/distance
+    -- logic every frame and will silently overwrite whatever offset we set
+    -- unless its offset control is disabled here too.
+    I.Camera.disableModeControl(namespace)
+    I.Camera.disableThirdPersonOffsetControl(namespace)
+    I.Camera.disableZoom(namespace)
+    I.Camera.disableStandingPreview(namespace)
 
     camera.setMode(camera.MODE.Preview, true)
 
@@ -111,9 +106,8 @@ function M.enter()
 
     local smooth = firstPersonCheck and settings.cam.smoothPanning.firstIn
         or settings.cam.smoothPanning.thirdIn
-    local snap = paused and settings.cam.ifPaused == "snap"
 
-    if smooth and not snap then
+    if smooth then
         pan.start(
             targetState.yaw, targetState.pitch, targetState.roll,
             startState.distance, targetState.distance,

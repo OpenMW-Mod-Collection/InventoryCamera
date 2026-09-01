@@ -15,10 +15,9 @@ smoothPanning_thirdIn: Third Person, In
 smoothPanning_thirdOut: Third Person, Out
 panDuration_name: Pan Duration (sec)
 yawPanDirection_name: Rotation Direction
-yawPanDirection_desc: |
-  Swing direction while panning.
-  
-  Requires "Smooth Panning" to be enabled.
+yawPanDirection_desc: >
+  Swing direction while panning in.
+  Panning out is always done in Auto mode.
 yawPanDirection_auto: Auto (shortest)
 yawPanDirection_CW: Clockwise
 yawPanDirection_CCW: Counter-CW
@@ -30,14 +29,10 @@ ctrl: Ctrl
 alt: Alt
 none: None
 skipDuringCombat_name: Disable During Combat
-ifPaused_name: If Inventory Paused
-ifPaused_desc: "Note: Horizontal and Vertical Offsets work only with unpaused inventory."
-disable: Do Nothing
-snap: Snap Instantly
 
 startingPosition_name: Starting Position
 startingPosition_desc: |
-  Ignored if "Smooth Camera Panning" is disabled.
+  Ignored if "Smooth Panning" is disabled.
 
   Ignored in third person. Your actual camera position will be used instead.
 destination_name: Final Position
@@ -49,10 +44,8 @@ yaw_desc: Horizontal camera angle.
 roll_name: Roll
 roll_desc: Tilts the camera around its forward axis.
 horizontalOffset_name: Horizontal Offset
-horizontalOffset_desc: Doesn't work while the game is paused.
 horizontalOffset_left: Left
 horizontalOffset_right: Right
 verticalOffset_name: Vertical Offset
-verticalOffset_desc: Doesn't work while the game is paused.
 verticalOffset_down: Down
 verticalOffset_up: Up

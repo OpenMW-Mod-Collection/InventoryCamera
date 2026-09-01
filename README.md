@@ -22,15 +22,9 @@ Open your inventory with style!
 
 </div>
 
-## Requirements
-
-This mod has been designed to be used with unpaused inventory. While it can be used with it fully paused, it's not recommended and I likely won't provide support for issues caused by it.
-
-You are free to use any menu unpausing mods that you like. I personally prefer [Unpause](https://www.nexusmods.com/morrowind/mods/60018).
-
 ## Compatibility
 
-This mod is compatible with effectively anything. Treat it as a "third person camera, just in a different position".
+Should be compatible with anything.
 
 Confirmed to be compatible with:
 
@@ -39,21 +33,21 @@ Confirmed to be compatible with:
 - [Devilish Alcohol Overhaul](https://www.nexusmods.com/morrowind/mods/55038) version 2.1 or newer
 - [Devilish Touch of Madness](https://www.nexusmods.com/morrowind/mods/59337) version 1.9 or newer
 
-## FAQ / Troubleshooting
+<!-- ## FAQ / Troubleshooting
 
 ### The camera snaps a little at the end of the animation
 
 This is a mod conflict on the other mods' side. Basically they might override camera rotation (usually Roll) every frame due an oversight in logic - they set it to 0 every time even when they shouldn't do anything. Check "Compatibility" section for any potential culprits.
 
-As a temporary measure you can set each rotation value to 0 one by one to see which one is problematic (usually it's Roll). Then leave them at 0 so that they will stay the same during the camera movement and consistent with the mod that overrides them.
+As a temporary measure you can set each rotation value to 0 one by one to see which one is problematic (usually it's Roll). Then leave them at 0 so that they will stay the same during the camera movement and consistent with the mod that overrides them. -->
 
 ## Recommended Mods
 
 - [Inventory Extender](https://www.nexusmods.com/morrowind/mods/59205) - Along with many wonderful things, this mod removes the paper doll. And seeing both yourself and your paper doll doesn't make much sense to me
+- [Unpause](https://www.nexusmods.com/morrowind/mods/60018) - Unpauses your inventory, allowing the game to play animations while you're in the inventory
 - [Dynamic Actors](https://www.nexusmods.com/morrowind/mods/54782) and [Dynamic Animations](https://www.nexusmods.com/morrowind/mods/57633) - Enhanced idle animations
 - [Consuming Animated](https://www.nexusmods.com/morrowind/mods/59069) - New animations for mundane actions
 - [Voice of the Nerevarine](https://www.nexusmods.com/morrowind/mods/59486) - Banter while digging through your luggage
-- [Perfect Placement](https://www.nexusmods.com/morrowind/mods/46562) - Since most of the time camera will be rotated towards you, dropping items in specific places without this mod might become an issue
 
 ## Credits
 

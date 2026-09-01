@@ -113,35 +113,6 @@ I.Settings.registerGroup {
             renderer = "checkbox",
             default = true,
         },
-        {
-            key = "ifPaused",
-            name = "ifPaused_name",
-            description = "ifPaused_desc",
-            renderer = "SuperSelect3",
-            default = "disable",
-            argument = {
-                l10n = "InventoryCamera",
-                items = {
-                    "disable",
-                    "snap",
-                },
-                width = 150,
-            }
-        },
-        -- {
-        --     key = "ifPaused",
-        --     name = "ifPaused_name",
-        --     description = "ifPaused_desc",
-        --     renderer = "select",
-        --     default = "disable",
-        --     argument = {
-        --         l10n = "InventoryCamera",
-        --         items = {
-        --             "disable",
-        --             "snap",
-        --         },
-        --     }
-        -- },
     },
 }
 
@@ -225,7 +196,6 @@ local function newPosSettings(defaults)
         {
             key = "horizontalOffset",
             name = "horizontalOffset_name",
-            description = "horizontalOffset_desc",
             renderer = "SuperSlider6",
             default = defaults.hOffset or 0,
             argument = {
@@ -243,7 +213,6 @@ local function newPosSettings(defaults)
         {
             key = "verticalOffset",
             name = "verticalOffset_name",
-            description = "verticalOffset_desc",
             renderer = "SuperSlider6",
             default = defaults.vOffset or 0,
             argument = {

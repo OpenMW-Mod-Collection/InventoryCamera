@@ -31,6 +31,12 @@ end
 
 local function onUpdate(dt)
     preview.update(dt)
+end
+
+-- onFrame runs even while the world is paused (unlike onUpdate's dt, which
+-- is always 0 on pause), so panning is driven from here to allow smooth
+-- offset/yaw/pitch/roll/distance transitions while paused.
+local function onFrame(dt)
     pan.update(dt, settings.cam.yawPanDirection)
 end
 
@@ -54,6 +60,7 @@ end
 return {
     engineHandlers = {
         onUpdate = onUpdate,
+        onFrame = onFrame,
         onInit = save.onLoad,
         onSave = save.onSave,
         onLoad = save.onLoad,
