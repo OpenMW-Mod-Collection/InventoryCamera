@@ -20,13 +20,13 @@ _Drinking animations from [Consuming Animated](https://www.nexusmods.com/morrowi
 
 _How it feels to use this mod._
 
-| **Available features**                        | **Paused** | **Unpaused** |
-| :----------------------------------------------| :----------:| :------------:|
-| Smooth camera panning                         | ✅          | ✅            |
-| Settings preview                              | ✅          | ✅            |
-| Real time equipment updates                   | ✅          | ✅            |
-| Animations                                    | ❌          | ✅            |
-| Anything else that cannot happen during pause | ❌          | ✅            |
+| **Available features**                          | **Paused** | **Unpaused** |
+| :------------------------------------------------| :----------:| :------------:|
+| Smooth camera panning                           | ✅          | ✅            |
+| Settings preview                                | ✅          | ✅            |
+| Real time equipment updates                     | ✅          | ✅            |
+| Animations                                      | ❌          | ✅            |
+| Everything else that cannot happen during pause | ❌          | ✅            |
 
 </div>
 
@@ -36,7 +36,7 @@ The mod does not come with inventory unpausing feature - for it you would need t
 
 Should be compatible with anything.
 
-Confirmed to be compatible with:
+Confirmed to be compatible with:[Red Mountain Tremors](https://www.nexusmods.com/morrowind/mods/53637)
 
 - [Rock the Boat](https://www.nexusmods.com/morrowind/mods/59338)
 - [Red Mountain Tremors](https://www.nexusmods.com/morrowind/mods/53637)
