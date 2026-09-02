@@ -113,6 +113,13 @@ I.Settings.registerGroup {
             renderer = "checkbox",
             default = true,
         },
+        {
+            key = "requireInvWindow",
+            name = "requireInvWindow_name",
+            description = "requireInvWindow_desc",
+            renderer = "checkbox",
+            default = true,
+        },
     },
 }
 

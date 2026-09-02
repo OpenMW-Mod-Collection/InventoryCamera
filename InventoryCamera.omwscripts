@@ -5,4 +5,3 @@ MENU: scripts/InventoryCamera/utils/SuperSelect3.lua
 MENU: scripts/InventoryCamera/settingsMenu.lua
 
 PLAYER: scripts/InventoryCamera/player.lua
-GLOBAL: scripts/InventoryCamera/global.lua

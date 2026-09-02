@@ -1,3 +1,4 @@
+---@diagnostic disable: param-type-mismatch
 ---@omw-context player
 
 local self = require('openmw.self')
@@ -6,6 +7,7 @@ local util = require('openmw.util')
 local v2 = util.vector2
 local I = require('openmw.interfaces')
 local pan = require("scripts.InventoryCamera.camera.pan")
+local pose = require("scripts.InventoryCamera.camera.pose")
 local settings = require("scripts.InventoryCamera.settings")
 
 local namespace = "InventoryCamera"
@@ -56,12 +58,25 @@ local function computeTargetState()
     }
 end
 
+-- Applies a pose instantly (used for the initial snap and the non-smooth
+-- fallback paths on entry). Must only be called while the camera is in
+-- Static mode.
 local function applyCameraState(state)
-    camera.setYaw(state.yaw)
-    camera.setPitch(state.pitch)
-    camera.setRoll(state.roll)
-    camera.setPreferredThirdPersonDistance(state.distance)
-    camera.setFocalPreferredOffset(state.offset)
+    pose.apply(state.yaw, state.pitch, state.roll, state.distance, state.offset)
+end
+
+-- Applies a pose to a normal tracked (First/ThirdPerson) camera, the same
+-- way the original Preview-based implementation always did. Used for the
+-- outward pan/snap in M.exit(), which runs *after* the camera has already
+-- been switched back out of Static mode - pose.apply/setStaticPosition
+-- would error here.
+local function applyTrackedState(yaw, pitch, roll, distance, offset)
+    camera.setFocalPreferredOffset(offset)
+    camera.setPreferredThirdPersonDistance(distance)
+    camera.setYaw(yaw)
+    camera.setPitch(pitch)
+    camera.setRoll(roll)
+    camera.instantTransition()
 end
 
 function M.enter()
@@ -83,16 +98,16 @@ function M.enter()
     savedDistance = camera.getThirdPersonDistance()
 
     -- Stop the built-in camera script from fighting us while the menu is
-    -- open. This must happen regardless of entry mode: in Preview mode the
-    -- built-in third-person script still runs its own offset/distance
-    -- logic every frame and will silently overwrite whatever offset we set
-    -- unless its offset control is disabled here too.
+    -- open. Static mode ignores the built-in third-person offset/zoom
+    -- logic entirely, but it can still fight us over *mode* (e.g. trying
+    -- to switch back to First/ThirdPerson), so mode control still needs
+    -- to be disabled.
     I.Camera.disableModeControl(namespace)
     I.Camera.disableThirdPersonOffsetControl(namespace)
     I.Camera.disableZoom(namespace)
     I.Camera.disableStandingPreview(namespace)
 
-    camera.setMode(camera.MODE.Preview, true)
+    camera.setMode(camera.MODE.Static, true)
 
     local startState = computeStartState(firstPersonCheck)
     local targetState = computeTargetState()
@@ -101,7 +116,6 @@ function M.enter()
         -- Third person doesn't need this: the camera is already sitting at
         -- startState by definition, so there's nothing to snap to.
         applyCameraState(startState)
-        camera.instantTransition()
     end
 
     local smooth = firstPersonCheck and settings.cam.smoothPanning.firstIn
@@ -109,6 +123,7 @@ function M.enter()
 
     if smooth then
         pan.start(
+            pose.apply,
             targetState.yaw, targetState.pitch, targetState.roll,
             startState.distance, targetState.distance,
             startState.offset, targetState.offset,
@@ -117,7 +132,6 @@ function M.enter()
     else
         pan.stop()
         applyCameraState(targetState)
-        camera.instantTransition()
     end
 end
 
@@ -134,23 +148,22 @@ function M.exit()
     local smooth = isFirstPerson and settings.cam.smoothPanning.firstOut
         or settings.cam.smoothPanning.thirdOut
 
-    -- Capture where the camera actually is *right now*, before setMode()
-    -- switches us back - setMode can otherwise snap the view to some
-    -- default pose (e.g. default third-person distance behind the player)
-    -- for a frame before we correct it. Panning from this captured state
-    -- means the camera always animates from its real current position back
-    -- to the saved one, never from that default.
+    -- Capture where the camera actually is *right now* (yaw/pitch/roll are
+    -- always readable regardless of mode; distance/offset only exist as
+    -- our own tracked pan state under Static mode) before setMode() snaps
+    -- us back to First/ThirdPerson - so we always pan from the real
+    -- current pose, never from whatever default that switch lands on.
     local curYaw = camera.getYaw()
     local curPitch = camera.getPitch()
     local curRoll = camera.getRoll()
-    local curDistance = camera.getThirdPersonDistance()
-    local curOffset = camera.getFocalPreferredOffset()
+    local _, _, _, curDistance, curOffset = pan.getPose()
 
     camera.setMode(savedMode, true)
 
     if smooth and not isFirstPerson then
         -- Re-assert the real current pose (setMode may have reset it),
-        -- then pan from there to the saved pose.
+        -- then pan from there to the saved pose. We're back in a tracked
+        -- mode now, so this goes through the normal third-person setters.
         camera.setFocalPreferredOffset(curOffset)
         camera.setPreferredThirdPersonDistance(curDistance)
         camera.setYaw(curYaw)
@@ -158,8 +171,8 @@ function M.exit()
         camera.setRoll(curRoll)
         camera.instantTransition()
 
-        pan.start(savedYaw, savedPitch, savedRoll, curDistance, savedDistance, curOffset, savedOffset,
-            settings.cam.panDuration)
+        pan.start(applyTrackedState, savedYaw, savedPitch, savedRoll, curDistance, savedDistance, curOffset,
+            savedOffset, settings.cam.panDuration)
     else
         pan.stop()
         camera.setFocalPreferredOffset(savedOffset)
@@ -168,6 +181,28 @@ function M.exit()
         camera.setPitch(savedPitch)
         camera.setRoll(savedRoll)
         camera.instantTransition()
+    end
+end
+
+--- Call every frame (e.g. from player.lua's onUpdate) while the menu
+--- camera might be active. Unlike Preview mode, Static mode never follows
+--- the actor on its own, so this either advances an in-progress pan or
+--- re-anchors the held pose to the actor's current position.
+---
+--- Note: once M.exit() has handed control back to a tracked mode (and,
+--- if smooth, kicked off the outward pan via pan.start above), the
+--- outward pan is *not* driven through here - it's a normal third-person
+--- pan and should continue to be advanced the same way this mod already
+--- drives player.lua's outward-pan updates today (i.e. via pan.update
+--- directly, honoring pan.isRunning()), since the camera is no longer in
+--- Static mode at that point.
+function M.update(yawPanDirection)
+    if not M.active then return end
+
+    if pan.isRunning() then
+        pan.update(yawPanDirection)
+    else
+        pan.reapply()
     end
 end
 

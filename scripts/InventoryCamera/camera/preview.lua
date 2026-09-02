@@ -6,10 +6,13 @@
 
 local self = require('openmw.self')
 local camera = require('openmw.camera')
+local util = require('openmw.util')
+local v2 = util.vector2
 local I = require('openmw.interfaces')
 
 local settings = require("scripts.InventoryCamera.settings")
 local view = require("scripts.InventoryCamera.camera.view")
+local pose = require("scripts.InventoryCamera.camera.pose")
 
 local previewTag = "InventoryCameraPreview"
 local PREVIEW_DURATION = 0.1
@@ -53,7 +56,7 @@ function M.start(kind)
         I.Camera.disableZoom(previewTag)
         I.Camera.disableStandingPreview(previewTag)
 
-        camera.setMode(camera.MODE.Preview, true)
+        camera.setMode(camera.MODE.Static, true)
     end
 
     M.active = true
@@ -66,12 +69,12 @@ function M.start(kind)
         yaw = yaw + math.rad(settings.finish.yaw)
     end
 
-    -- Offsets are intentionally not previewed.
-    camera.setPreferredThirdPersonDistance(section.distance)
-    camera.instantTransition()
-    camera.setYaw(yaw)
-    camera.setPitch(math.rad(section.pitch))
-    camera.setRoll(math.rad(section.roll))
+    -- Preview the section's own offset, same as distance/pitch/roll below -
+    -- not combined with the other section's offset, mirroring how distance/
+    -- pitch/roll are picked directly from `section` rather than summed.
+    local offset = v2(section.horizontalOffset, section.verticalOffset)
+
+    pose.apply(yaw, math.rad(section.pitch), math.rad(section.roll), section.distance, offset)
 end
 
 function M.update(dt)

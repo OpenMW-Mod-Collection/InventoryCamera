@@ -29,6 +29,10 @@ ctrl: Ctrl
 alt: Alt
 none: None
 skipDuringCombat_name: Disable During Combat
+requireInvWindow_name: Require Inventory Window
+requireInvWindow_desc: >
+  UI mods tend to use Inventory UI Mode with now actual windows to clean your screen.
+  With this setting enabled the mod will ignore such cases.
 
 startingPosition_name: Starting Position
 startingPosition_desc: |

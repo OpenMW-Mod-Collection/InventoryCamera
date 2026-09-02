@@ -1,7 +1,6 @@
 ---@omw-context player
 local input = require("openmw.input")
-local self = require("openmw.self")
-local camera = require("openmw.camera")
+local I = require("openmw.interfaces")
 
 local settings = require("scripts.InventoryCamera.settings")
 local pan = require("scripts.InventoryCamera.camera.pan")
@@ -9,8 +8,6 @@ local view = require("scripts.InventoryCamera.camera.view")
 local preview = require("scripts.InventoryCamera.camera.preview")
 local save = require("scripts.InventoryCamera.camera.save")
 local combatTracker = require("scripts.InventoryCamera.utils.combatTracker")
-
-local lastSelfRotation
 
 settings.onPreviewCallbacks(
     function() preview.start('start') end,
@@ -37,19 +34,21 @@ end
 -- is always 0 on pause), so panning is driven from here to allow smooth
 -- offset/yaw/pitch/roll/distance transitions while paused.
 local function onFrame(dt)
-    pan.update(dt, settings.cam.yawPanDirection)
+    pan.update(settings.cam.yawPanDirection)
 end
 
 local function onUiModeChanged(data)
-    local enteringInventory = data.newMode == 'Interface' and data.oldMode ~= 'Interface'
-    local leavingInventory = data.oldMode == 'Interface' and data.newMode ~= 'Interface'
+    local enteringInventory = data.newMode == 'Interface'
+        and data.oldMode ~= 'Interface'
+        and (I.UI.isWindowVisible(I.UI.WINDOW.Inventory) or not settings.cam.requireInvWindow)
+    local leavingInventory = data.oldMode == 'Interface'
+        and data.newMode ~= 'Interface'
     local skipPreview = antiPreviewKeyPressed(settings.cam.antiPreviewKey)
         or (combatTracker.inCombat and settings.cam.skipDuringCombat)
 
     if enteringInventory and not skipPreview then
         preview.endPreview()
         view.enter()
-        lastSelfRotation = self.rotation
     elseif leavingInventory then
         view.exit()
     elseif view.active then
@@ -66,13 +65,7 @@ return {
         onLoad = save.onLoad,
     },
     eventHandlers = {
-        UiModeChanged = function(data)
-            self:sendEvent("InventoryCamera_UiModeChanged", data)
-        end,
+        UiModeChanged = onUiModeChanged,
         OMWMusicCombatTargetsChanged = combatTracker.OMWMusicCombatTargetsChanged,
-        InventoryCamera_UiModeChanged = onUiModeChanged,
-        InventoryCamera_forceLastRotation = function()
-            self.rotation = lastSelfRotation or self.rotation
-        end,
     },
 }
