@@ -43,7 +43,8 @@ Confirmed to be compatible with:
 - [Devilish Alcohol Overhaul](https://www.nexusmods.com/morrowind/mods/55038) version 2.5 or newer
 - [Devilish Touch of Madness](https://www.nexusmods.com/morrowind/mods/59337) version 1.9 or newer
 - [Consuming Animated](https://www.nexusmods.com/morrowind/mods/59069) - disable "Lock camera perspective" in the settings
-- [Dynamic Camera](https://www.nexusmods.com/morrowind/mods/55327) - compatible with minor issues
+
+[Dynamic Camera](https://www.nexusmods.com/morrowind/mods/55327) - compatible with minor issues
 
 ## FAQ / Troubleshooting
 
@@ -61,7 +62,7 @@ This isn't going to be fixed until [Dynamic Camera](https://www.nexusmods.com/mo
 
 ### Animations get interrupted when changing perspectives
 
-Yes, it's a known engine feature - the same happens if you go from 1st perston to 3rd too. Can't do anything about it. If it breaks some other mod - tell the mod author about it, not me.
+Yes, it's a known engine feature - the same happens if you go from 1st person to 3rd too. Can't do anything about it. If it breaks some other mod - tell the mod author about it, not me.
 
 ## Recommended Mods
 
