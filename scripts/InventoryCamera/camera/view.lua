@@ -1,4 +1,4 @@
----@diagnostic disable: param-type-mismatch
+---@diagnostic disable: param-type-mismatch, undefined-field
 ---@omw-context player
 
 local self = require('openmw.self')
@@ -177,9 +177,20 @@ function M.exit()
         pan.stop()
         camera.setFocalPreferredOffset(savedOffset)
         camera.setPreferredThirdPersonDistance(savedDistance)
-        camera.setYaw(savedYaw)
-        camera.setPitch(savedPitch)
         camera.setRoll(savedRoll)
+
+        -- Dynamic Camera compat
+        if isFirstPerson and I.DynamicCamera then
+            local speedMult = I.DynamicCamera.camSpeedMult
+            if speedMult and speedMult ~= 0 then
+                self.controls.yawChange = self.controls.yawChange + (savedYaw - curYaw) / speedMult
+                self.controls.pitchChange = self.controls.pitchChange + (savedPitch - curPitch) / speedMult
+            end
+        else
+            camera.setYaw(savedYaw)
+            camera.setPitch(savedPitch)
+        end
+        
         camera.instantTransition()
     end
 end

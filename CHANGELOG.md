@@ -1,5 +1,9 @@
 # Inventory Camera (OpenMW)
 
+## 2.1
+
+- Added Dynamic Camera support (it's 95% there, check the FAQ for details)
+
 ## 2.0
 
 - The mod is now completely functional with paused inventory. Unpausers are no longer required, but still highly recommended
