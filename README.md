@@ -42,7 +42,7 @@ Confirmed to be compatible with:
 - [Red Mountain Tremors](https://www.nexusmods.com/morrowind/mods/53637)
 - [Devilish Alcohol Overhaul](https://www.nexusmods.com/morrowind/mods/55038) version 2.5 or newer
 - [Devilish Touch of Madness](https://www.nexusmods.com/morrowind/mods/59337) version 1.9 or newer
-- [Consuming Animated](https://www.nexusmods.com/morrowind/mods/59069) - disable "Lock camera perspective" in the settings
+- [Consuming Animated](https://www.nexusmods.com/morrowind/mods/59069) - ~~disable "Lock camera perspective" in the settings~~ compatible with 2.0.3.1 or newer out of the box
 
 [Dynamic Camera](https://www.nexusmods.com/morrowind/mods/55327) - compatible with minor issues
 
