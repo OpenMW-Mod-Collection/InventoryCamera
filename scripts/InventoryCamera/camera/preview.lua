@@ -1,3 +1,4 @@
+---@diagnostic disable: undefined-field
 ---@omw-context player
 -- While tweaking the "starting position" or "destination" settings outside
 -- the inventory, briefly show the camera at that position so the change is
@@ -10,7 +11,7 @@ local util = require('openmw.util')
 local v2 = util.vector2
 local I = require('openmw.interfaces')
 
-local settings = require("scripts.InventoryCamera.settings")
+local settings = require("scripts.InventoryCamera.settingsManager")
 local view = require("scripts.InventoryCamera.camera.view")
 local pose = require("scripts.InventoryCamera.camera.pose")
 

@@ -6,13 +6,13 @@ page_desc: |
 
 cameraSettings_name: Camera Settings
 person_name: Active In
-person_first: First Person
-person_third: Third Person
+first: First Person
+third: Third Person
 smoothPanning_name: Smooth Panning
 smoothPanning_desc: Eases the camera into place instead of snapping instantly.
-smoothPanning_firstIn: First Person, In
-smoothPanning_thirdIn: Third Person, In
-smoothPanning_thirdOut: Third Person, Out
+firstIn: First Person, In
+thirdIn: Third Person, In
+thirdOut: Third Person, Out
 panDuration_name: Pan Duration (sec)
 yawPanDirection_name: Rotation Direction
 yawPanDirection_desc: >
@@ -53,3 +53,48 @@ horizontalOffset_right: Right
 verticalOffset_name: Vertical Offset
 verticalOffset_down: Down
 verticalOffset_up: Up
+
+controls_name: Mouse Controls
+controls_desc: |
+  Work over empty screen space only - anywhere that is not a window.
+
+  While the camera is up, clicking the HUD icons doesn't work. With the vanilla inventory, neither does picking up an item by clicking it in the world or dropping one into the world. With Inventory Extender both still work.
+rotate_name: Rotate With Left Mouse
+rotate_desc: Hold the left mouse button and drag to swing the camera around your character.
+zoom_name: Zoom With Mouse Wheel
+zoom_desc: Scroll to move the camera closer or further away.
+dropToEquip_name: Drop Items On Character To Use
+dropToEquip_desc: >
+  Inventory Extender only. Carry an item out of the inventory and click on your character to equip it (or drink it, read it...), the way dropping it on the vanilla paper doll does.
+  The vanilla inventory's drag and drop can't be seen from Lua, so it can't do this.
+rotateSpeed_name: Rotation Speed
+rotateSpeed_desc: At 100% a drag across the width of a 1280 pixel wide screen turns the camera about one full circle.
+zoomSpeed_name: Zoom Speed
+zoomSpeed_desc: At 100% each wheel notch moves the camera 12% of the way closer.
+minDistance_name: Closest Zoom
+minDistance_desc: Nearest the mouse wheel will bring the camera.
+maxDistance_name: Furthest Zoom
+maxDistance_desc: Furthest the mouse wheel will take the camera.
+
+spotlight_name: Spotlight
+spotlight_desc: |
+  Hangs a light in front of you, above your head, and fades everything outside a pool of light around you to near black while the inventory is open.
+
+  The fading is a post-processing shader, so it needs post processing switched on in the video settings. The light works without it.
+spotEnabled_name: Enable Spotlight
+spotEnabled_desc: Switches the whole effect, light and fading, on or off.
+surroundBrightness_name: Surroundings Brightness
+surroundBrightness_desc: How much of the scene outside the spotlight is left. 0% is pitch black.
+radiusScale_name: Spotlight Radius
+radiusScale_desc: Radius of the pool of light around you, as a multiple of your character's own radius. 2x leaves about one body width of floor lit on each side.
+softness_name: Edge Softness
+softness_desc: How gradually the pool of light fades out at its edge.
+light_name: Overhead Light
+light_desc: Hangs a real light above your head, so your character is lit even in the dark.
+lightInFront_name: Light Distance In Front
+lightInFront_desc: How far in front of you the overhead light hangs, in game units. Takes effect the next time the inventory is opened.
+lightAboveHead_name: Light Height Above Head
+lightAboveHead_desc: How far above the top of your head the light hangs, in game units. Takes effect the next time the inventory is opened.
+lightRadius_name: Light Radius
+lightRadius_desc: How far the overhead light reaches, in game units. Takes effect the next time the inventory is opened.
+lightColor_name: Light Color

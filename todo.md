@@ -1,0 +1,8 @@
+- [ ] Change settings to my preference
+- [x] Add color picker settings renderer
+- [x] Add Multicheckbox settings renderer
+- [x] Add "Equip" tooltip to cursor when dragging item on the Players
+- [x] Make scrolling out keep the player in the same spot (toggleable)
+- [x] Move camera offset with Middle Click
+- [x] Try adding a DOF shader when in inventory
+- [ ] Update compatibility with Dynamic Camera

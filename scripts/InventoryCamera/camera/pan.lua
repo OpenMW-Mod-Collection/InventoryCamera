@@ -93,6 +93,18 @@ function M.stop()
     state.running = false
 end
 
+--- Applies a pose right away via applyFn and records it as the current
+--- pose, cancelling any pan in progress. Used for instant snaps and for the
+--- mouse orbit, so getPose() - and with it the outward pan in view.exit() -
+--- always starts from where the camera really is.
+function M.set(applyFn, yaw, pitch, roll, distance, offset)
+    state.running = false
+    state.applyFn = applyFn
+    applyFn(yaw, pitch, roll, distance, offset)
+    state.curYaw, state.curPitch, state.curRoll = yaw, pitch, roll
+    state.curDistance, state.curOffset = distance, offset
+end
+
 function M.isRunning()
     return state.running
 end

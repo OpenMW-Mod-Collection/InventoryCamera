@@ -42,9 +42,8 @@ Confirmed to be compatible with:
 - [Red Mountain Tremors](https://www.nexusmods.com/morrowind/mods/53637)
 - [Devilish Alcohol Overhaul](https://www.nexusmods.com/morrowind/mods/55038) version 2.5 or newer
 - [Devilish Touch of Madness](https://www.nexusmods.com/morrowind/mods/59337) version 1.9 or newer
-- [Consuming Animated](https://www.nexusmods.com/morrowind/mods/59069) - ~~disable "Lock camera perspective" in the settings~~ compatible with 2.0.3.1 or newer out of the box
-
-[Dynamic Camera](https://www.nexusmods.com/morrowind/mods/55327) - compatible with minor issues
+- [Consuming Animated](https://www.nexusmods.com/morrowind/mods/59069) version 2.0.3.1 or newer
+- [Dynamic Camera](https://www.nexusmods.com/morrowind/mods/55327) - compatible with minor issues
 
 ## FAQ / Troubleshooting
 
@@ -75,5 +74,7 @@ Yes, it's a known engine feature - the same happens if you go from 1st person to
 ## Credits
 
 **Sosnoviy Bor** - Author  
+**Max Yari and his clanker** - Code contributions (intial versions of spotlight, mouse controls and Inventory Extender integration)  
+**Wareya** - Programmable Hex Depth of Field Shader
 **ownlyme** - Custom settings renderers ([Super Settings Renderers](https://www.nexusmods.com/morrowind/mods/59673))  
 **SorreFalcon** - Custom settings renderers ([Sorre's Custom Renderers](https://www.nexusmods.com/morrowind/mods/59808))

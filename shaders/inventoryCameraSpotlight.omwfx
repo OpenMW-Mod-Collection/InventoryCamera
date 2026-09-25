@@ -1,0 +1,71 @@
+uniform_float uStrength {
+    default = 0.0;
+    static = false;
+}
+
+uniform_vec3 uCenter {
+    default = vec3(0.0, 0.0, 0.0);
+    static = false;
+}
+
+uniform_float uRadius {
+    default = 60.0;
+    static = false;
+}
+
+uniform_float uTop {
+    default = 130.0;
+    static = false;
+}
+
+uniform_float uSoftness {
+    default = 0.35;
+    static = false;
+}
+
+uniform_float uFloor {
+    default = 0.06;
+    static = false;
+}
+
+fragment spotlight {
+    omw_In vec2 omw_TexCoord;
+
+    void main()
+    {
+        vec4 scene = omw_GetLastShader(omw_TexCoord);
+
+        if (uStrength <= 0.0)
+        {
+            omw_FragColor = scene;
+            return;
+        }
+
+        // Sky, and anything else sitting on the far plane, stays dark.
+        float lit = 0.0;
+        if (omw_GetLinearDepth(omw_TexCoord) < omw.far * 0.999)
+        {
+            // A soft-edged vertical column around the character: the pool
+            // on the floor and the character standing in it. Above their head
+            // it fades out over one radius, so the ceiling stays dark.
+            vec3 rel = omw_GetWorldPosFromUV(omw_TexCoord) - uCenter;
+            float inner = uRadius * (1.0 - uSoftness);
+            float outer = max(uRadius * (1.0 + uSoftness), inner + 0.001);
+            float radial = 1.0 - smoothstep(inner, outer, length(rel.xy));
+            float vertical = 1.0 - smoothstep(uTop, uTop + uRadius, rel.z);
+            lit = radial * vertical;
+        }
+
+        vec3 darkened = scene.rgb * mix(uFloor, 1.0, lit);
+        omw_FragColor = vec4(mix(scene.rgb, darkened, uStrength), scene.a);
+    }
+}
+
+technique {
+    passes = spotlight;
+    description = "Inventory Camera: fades everything outside a pool of light around the character to near black while the inventory is open.";
+    version = "1.0";
+    author = "Max Yari";
+    dynamic = true;
+    flags = hidden;
+}

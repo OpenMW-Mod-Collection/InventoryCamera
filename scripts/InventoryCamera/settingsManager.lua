@@ -17,6 +17,18 @@ M.cam = settingsCache.new(
     storage.playerSection("SettingsInventoryCamera_camera"),
     async
 )
+M.controls = settingsCache.new(
+    storage.playerSection("SettingsInventoryCamera_controls"),
+    async
+)
+M.spot = settingsCache.new(
+    storage.playerSection("SettingsInventoryCamera_spotlight"),
+    async
+)
+M.dof = settingsCache.new(
+    storage.playerSection("SettingsInventoryCamera_depthOfField"),
+    async
+)
 M.start = settingsCache.new(
     storage.playerSection("SettingsInventoryCamera_startingPosition"),
     async,

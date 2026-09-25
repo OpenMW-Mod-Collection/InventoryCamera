@@ -2,11 +2,14 @@
 local input = require("openmw.input")
 local I = require("openmw.interfaces")
 
-local settings = require("scripts.InventoryCamera.settings")
+local settings = require("scripts.InventoryCamera.settingsManager")
 local pan = require("scripts.InventoryCamera.camera.pan")
 local view = require("scripts.InventoryCamera.camera.view")
 local preview = require("scripts.InventoryCamera.camera.preview")
 local save = require("scripts.InventoryCamera.camera.save")
+local orbit = require("scripts.InventoryCamera.camera.orbit")
+local spotlight = require("scripts.InventoryCamera.shaders.spotlight")
+local dof = require("scripts.InventoryCamera.shaders.dof")
 local combatTracker = require("scripts.InventoryCamera.utils.combatTracker")
 
 settings.onPreviewCallbacks(
@@ -35,6 +38,26 @@ end
 -- offset/yaw/pitch/roll/distance transitions while paused.
 local function onFrame(dt)
     pan.update(settings.cam.yawPanDirection)
+    orbit.update()
+    spotlight.update()
+    dof.update()
+end
+
+local function enterView()
+    view.enter()
+    -- enter() bails out when the current perspective is switched off
+    if not view.active then return end
+    orbit.start()
+    spotlight.enter()
+    dof.enter()
+end
+
+-- Orbit first: exit() pans out from the pose the orbit last applied.
+local function exitView()
+    orbit.stop()
+    spotlight.exit()
+    dof.exit()
+    view.exit()
 end
 
 local function onUiModeChanged(data)
@@ -48,11 +71,11 @@ local function onUiModeChanged(data)
 
     if enteringInventory and not skipPreview then
         preview.endPreview()
-        view.enter()
+        enterView()
     elseif leavingInventory then
-        view.exit()
+        exitView()
     elseif view.active then
-        view.exit()
+        exitView()
     end
 end
 
@@ -60,6 +83,7 @@ return {
     engineHandlers = {
         onUpdate = onUpdate,
         onFrame = onFrame,
+        onMouseWheel = orbit.onMouseWheel,
         onInit = save.onLoad,
         onSave = save.onSave,
         onLoad = save.onLoad,

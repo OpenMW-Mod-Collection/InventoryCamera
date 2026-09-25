@@ -8,7 +8,7 @@ local v2 = util.vector2
 local I = require('openmw.interfaces')
 local pan = require("scripts.InventoryCamera.camera.pan")
 local pose = require("scripts.InventoryCamera.camera.pose")
-local settings = require("scripts.InventoryCamera.settings")
+local settings = require("scripts.InventoryCamera.settingsManager")
 
 local namespace = "InventoryCamera"
 
@@ -130,8 +130,10 @@ function M.enter()
             settings.cam.panDuration
         )
     else
-        pan.stop()
-        applyCameraState(targetState)
+        -- Through pan.set rather than applyCameraState, so the pose is also
+        -- recorded for M.exit() and the mouse orbit to start from.
+        pan.set(pose.apply, targetState.yaw, targetState.pitch, targetState.roll,
+            targetState.distance, targetState.offset)
     end
 end
 
