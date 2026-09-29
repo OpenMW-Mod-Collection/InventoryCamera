@@ -6,3 +6,5 @@
 - [x] Move camera offset with Middle Click
 - [x] Try adding a DOF shader when in inventory
 - [ ] Update compatibility with Dynamic Camera
+- [ ] Update readme
+- [ ] Update changelog

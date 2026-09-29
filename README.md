@@ -20,17 +20,22 @@ _Drinking animations from [Consuming Animated](https://www.nexusmods.com/morrowi
 
 _How it feels to use this mod._
 
-| **Available features**                          | **Paused** | **Unpaused** |
-| :------------------------------------------------| :----------:| :------------:|
-| Smooth camera panning                           | ✅          | ✅            |
-| Settings preview                                | ✅          | ✅            |
-| Real time equipment updates                     | ✅          | ✅            |
-| Animations                                      | ❌          | ✅            |
-| Everything else that cannot happen during pause | ❌          | ✅            |
+| **Available features**                          | **Paused** | **Unpaused** | **Notes**                        |
+| :------------------------------------------------| :----------:| :------------:| :---------------------------------|
+| Smooth camera panning                           | ✅          | ✅            |                                  |
+| Settings preview                                | ✅          | ✅            |                                  |
+| Mouse camera controls                           | ✅          | ✅            |                                  |
+| Spotlight shader                                | ✅          | ✅            | Requires Post Processing enabled |
+| Depth of Field shader                           | ✅          | ✅            | Requires Post Processing enabled |
+| Item drag and drop equipping                    | ✅          | ✅            | Requires Inventory Extender      |
+| Item drag and drop unequipping                  | ❌          | ❌            | Not possible yet                 |
+| Real time equipment updates                     | ✅          | ✅            |                                  |
+| Animations                                      | ❌          | ✅            |                                  |
+| Everything else that cannot happen during pause | ❌          | ✅            |                                  |
 
 </div>
 
-The mod does not come with inventory unpausing feature - for it you would need to install an separate mod. I personaly prefer [Unpause](https://www.nexusmods.com/morrowind/mods/60018).
+The mod does not come with inventory unpausing feature - for it you would need to install an separate mod. I personaly recommend [Unpause](https://www.nexusmods.com/morrowind/mods/60018).
 
 ## Compatibility
 
@@ -43,7 +48,7 @@ Confirmed to be compatible with:
 - [Devilish Alcohol Overhaul](https://www.nexusmods.com/morrowind/mods/55038) version 2.5 or newer
 - [Devilish Touch of Madness](https://www.nexusmods.com/morrowind/mods/59337) version 1.9 or newer
 - [Consuming Animated](https://www.nexusmods.com/morrowind/mods/59069) version 2.0.3.1 or newer
-- [Dynamic Camera](https://www.nexusmods.com/morrowind/mods/55327) - compatible with minor issues
+- [Dynamic Camera](https://www.nexusmods.com/morrowind/mods/55327) - version 2.7 or newer
 
 ## FAQ / Troubleshooting
 
@@ -52,12 +57,6 @@ Confirmed to be compatible with:
 This is a mod conflict on the other mods' side. Basically they might override camera rotation every frame due an oversight in logic - they set it to 0 every time even when they shouldn't do anything. Check "Compatibility" section for any potential culprits.
 
 As a temporary measure you can set each rotation value to 0 one by one to see which one is problematic (usually it's Roll). Then leave them at 0 so that they will stay the same during the camera movement and consistent with the mod that overrides them.
-
-### The camera return position drifts a little
-
-Due to how Dynamic Camera works, if you exit 1st person panning prematurely, your camera's return position will be slightly off from its initial position. The error scales with your camera panning speed, but even then it shouldn't be too noticeable unless you deliberately spam the Inventory button.
-
-This isn't going to be fixed until [Dynamic Camera](https://www.nexusmods.com/morrowind/mods/55327) gets more interfaces to work with on its end. Trying to predict its calculations is annoying, isn't worth it, and I couldn't be arsed.
 
 ### Animations get interrupted when changing perspectives
 
@@ -75,6 +74,6 @@ Yes, it's a known engine feature - the same happens if you go from 1st person to
 
 **Sosnoviy Bor** - Author  
 **Max Yari and his clanker** - Code contributions (intial versions of spotlight, mouse controls and Inventory Extender integration)  
-**Wareya** - Programmable Hex Depth of Field Shader
+**Wareya** - Programmable Hex Depth of Field Shader  
 **ownlyme** - Custom settings renderers ([Super Settings Renderers](https://www.nexusmods.com/morrowind/mods/59673))  
-**SorreFalcon** - Custom settings renderers ([Sorre's Custom Renderers](https://www.nexusmods.com/morrowind/mods/59808))
+**SorreFalcon** - Custom settings renderers in the legacy versions of the modd ([Sorre's Custom Renderers](https://www.nexusmods.com/morrowind/mods/59808))
