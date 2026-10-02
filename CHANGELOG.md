@@ -3,7 +3,7 @@
 ## 3.0
 
 - Added partial paper doll-like interactions with the player. Selecting an item and dropping it onto the player now uses the item (equips, consumes, opens, etc). Doesn't work for gear unequipping. Requires Inventory Extender
-- Added Mouse controls to the inventory view. LMB - rotate camera around the player, MMB - offset the camera vertically/horizontally, Mouse Wheel - zoom to or from the player
+- Added Mouse controls to the inventory view. LMB - rotate camera around the player, MMB - offset the camera vertically/horizontally, Mouse Wheel - zoom to or from the player. Requires Inventory Extender
 - Added theater-esque Spotligt shader when in inventory view. Everything around you turnes dark and only you are left under the spotlight
 - Added Depth of Field shader when in inventory view. Blurs everything behind you
 - Fixed all compatibility issues with Dynamic Camera mod. Requires Dynamic Camera version 2.7 or newer

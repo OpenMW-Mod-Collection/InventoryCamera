@@ -131,7 +131,7 @@ function M.update()
     shader:setFloat("uRadius", charRadius * s.radiusScale)
     shader:setFloat("uTop", charHeight)                    -- where the column starts fading out
     shader:setFloat("uSoftness", s.softness / 100)
-    shader:setFloat("uFloor", s.surroundBrightness / 100)
+    shader:setFloat("uFloor", math.abs(s.opacity - 100) / 100)
 end
 
 return M

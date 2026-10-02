@@ -279,7 +279,7 @@ I.Settings.registerGroup {
     }
 }
 
-local function slider(key, default, min, max, unit, step)
+local function slider(key, default, min, max, unit, step, minLabel, maxLabel)
     return {
         key = key,
         name = key .. "_name",
@@ -295,6 +295,8 @@ local function slider(key, default, min, max, unit, step)
             bottomRow = true,
             unit = unit,
             showResetButton = true,
+            minLabel = minLabel,
+            maxLabel = maxLabel,
         },
     }
 end
@@ -311,21 +313,54 @@ I.Settings.registerGroup {
         {
             key = "enableMouseControls",
             name = "enableMouseControls_name",
-            description = "enableMouseControls_desc",
             renderer = "multiCheckbox",
             default = {
-                rotate  = true,
-                move  = true,
-                zoom = true,
+                enableMouseControls_rotate = true,
+                enableMouseControls_move   = true,
+                enableMouseControls_zoom   = true,
             },
             argument = {
                 l10n = "InventoryCamera",
                 keys = {
-                    "rotate",
-                    "move",
-                    "zoom",
+                    "enableMouseControls_rotate",
+                    "enableMouseControls_move",
+                    "enableMouseControls_zoom",
                 },
                 colorful = true,
+            },
+        },
+        {
+            key = 'speed',
+            name = 'speed_name',
+            renderer = 'multiNumber_V1',
+            default = {
+                speed_rotate = 100,
+                speed_pan = 100,
+                speed_zoom = 100,
+            },
+            argument = {
+                l10n = "InventoryCamera",
+                keys = {
+                    "speed_rotate",
+                    "speed_pan",
+                    "speed_zoom",
+                },
+            },
+        },
+        {
+            key = 'distanceCap',
+            name = 'distanceCap_name',
+            renderer = 'multiNumber_V1',
+            default = {
+                distanceCap_min = 40,
+                distanceCap_max = 350,
+            },
+            argument = {
+                l10n = "InventoryCamera",
+                keys = {
+                    "distanceCap_min",
+                    "distanceCap_max",
+                },
             },
         },
         {
@@ -342,11 +377,6 @@ I.Settings.registerGroup {
             renderer = "checkbox",
             default = true,
         },
-        slider("rotateSpeed", 100, 10, 300, "%"),
-        slider("panSpeed", 100, 10, 300, "%"),
-        slider("zoomSpeed", 100, 10, 300, "%"),
-        slider("minDistance", 40, 10, 750),
-        slider("maxDistance", 350, 10, 750),
     },
 }
 
@@ -364,17 +394,17 @@ I.Settings.registerGroup {
             name = "spotEnabled_name",
             description = "spotEnabled_desc",
             renderer = "checkbox",
-            default = true,
+            default = false,
         },
-        slider("surroundBrightness", 6, 0, 100, "%"),
-        slider("radiusScale", 2, 0, 6, "x", 0.1),
-        slider("softness", 35, 0, 100, "%"),
+        slider("opacity", 66, 0, 100, "%", 1, "Transparent", "Pitch Black"),
+        slider("radiusScale", 2.5, 0, 6, "x", 0.1),
+        slider("softness", 35, 0, 100, "%", 1),
         {
             key = "light",
             name = "light_name",
             description = "light_desc",
             renderer = "checkbox",
-            default = true,
+            default = false,
         },
         slider("lightInFront", 70, 0, 400),
         slider("lightAboveHead", 80, 0, 300),
@@ -403,12 +433,44 @@ I.Settings.registerGroup {
         {
             key = "enabled",
             name = "dofEnabled_name",
-            description = "dofEnabled_desc",
             renderer = "checkbox",
             default = true,
         },
-        slider("aperture", 0.2, 0, 1, nil, 0.01),
-        slider("fadeIn", 2, 0, 5, "sec", 0.1),
-        slider("fadeOut", 0.3, 0, 5, "sec", 0.1),
+        {
+            key = "aperture",
+            name = "aperture_name",
+            renderer = "SuperSlider6",
+            default = 20,
+            argument = {
+                min = 0,
+                max = 100,
+                step = 1,
+                stepAffectsTextInput = false,
+                default = 20,
+                bottomRow = true,
+                unit = "%",
+                showResetButton = true,
+            },
+        },
+        {
+            key = 'fade',
+            name = 'fade_name',
+            renderer = 'multiNumber_V1',
+            default = {
+                fade_in = 2,
+                fade_out = 0.3,
+            },
+            argument = {
+                l10n = "InventoryCamera",
+                keys = {
+                    "fade_in",
+                    "fade_out",
+                },
+                min = {
+                    fade_in = 0,
+                    fade_out = 0,
+                },
+            },
+        },
     },
 }

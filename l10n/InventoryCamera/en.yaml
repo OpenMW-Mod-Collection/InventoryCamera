@@ -58,43 +58,55 @@ controls_name: Mouse Controls
 controls_desc: |
   Work over empty screen space only - anywhere that is not a window.
 
-  While the camera is up, clicking the HUD icons doesn't work. With the vanilla inventory, neither does picking up an item by clicking it in the world or dropping one into the world. With Inventory Extender both still work.
-rotate_name: Rotate With Left Mouse
-rotate_desc: Hold the left mouse button and drag to swing the camera around your character.
-zoom_name: Zoom With Mouse Wheel
-zoom_desc: Scroll to move the camera closer or further away.
+  Requires Inventory Extender. Without it, it will block dropping items into the world.
+enableMouseControls_name: Enable
+enableMouseControls_rotate: LMB - Rotate
+enableMouseControls_move: MMB - Move
+enableMouseControls_zoom: Mouse Wheel - Zoom
+speed_name: Mouse Contols Speed (%)
+speed_rotate: Rotate
+speed_pan: Move
+speed_zoom: Zoom
+distanceCap_name: Zooming Distance Caps
+distanceCap_min: Closest
+distanceCap_max: Furthest
 dropToEquip_name: Drop Items On Character To Use
 dropToEquip_desc: >
-  Inventory Extender only. Carry an item out of the inventory and click on your character to equip it (or drink it, read it...), the way dropping it on the vanilla paper doll does.
-  The vanilla inventory's drag and drop can't be seen from Lua, so it can't do this.
-rotateSpeed_name: Rotation Speed
-rotateSpeed_desc: At 100% a drag across the width of a 1280 pixel wide screen turns the camera about one full circle.
-zoomSpeed_name: Zoom Speed
-zoomSpeed_desc: At 100% each wheel notch moves the camera 12% of the way closer.
-minDistance_name: Closest Zoom
-minDistance_desc: Nearest the mouse wheel will bring the camera.
-maxDistance_name: Furthest Zoom
-maxDistance_desc: Furthest the mouse wheel will take the camera.
+  Carry an item out of the inventory and click on your character to equip it (or drink it, read it...),
+  the way dropping it on the vanilla paper doll does.
+dropTooltip_name: Enable Drop Tooltip
+dropTooltip_desc: Shows a little [Use] tooltip when the item will be used instead of dropped on the ground
 
 spotlight_name: Spotlight
 spotlight_desc: |
   Hangs a light in front of you, above your head, and fades everything outside a pool of light around you to near black while the inventory is open.
 
-  The fading is a post-processing shader, so it needs post processing switched on in the video settings. The light works without it.
-spotEnabled_name: Enable Spotlight
-spotEnabled_desc: Switches the whole effect, light and fading, on or off.
-surroundBrightness_name: Surroundings Brightness
-surroundBrightness_desc: How much of the scene outside the spotlight is left. 0% is pitch black.
+  Requires Post Processing enabled.
+spotEnabled_name: Enable Spotlight Shader
+spotEnabled_desc: Requires Post Processing enabled
+opacity_name: Spotlight Opacity
+opacity_desc: Turns the world around you dark.
 radiusScale_name: Spotlight Radius
-radiusScale_desc: Radius of the pool of light around you, as a multiple of your character's own radius. 2x leaves about one body width of floor lit on each side.
+radiusScale_desc: Radius of the pool of light around you, as a multiple of your character's own radius.
 softness_name: Edge Softness
 softness_desc: How gradually the pool of light fades out at its edge.
 light_name: Overhead Light
 light_desc: Hangs a real light above your head, so your character is lit even in the dark.
 lightInFront_name: Light Distance In Front
-lightInFront_desc: How far in front of you the overhead light hangs, in game units. Takes effect the next time the inventory is opened.
+lightInFront_desc: How far in front of you the overhead light hangs.
 lightAboveHead_name: Light Height Above Head
-lightAboveHead_desc: How far above the top of your head the light hangs, in game units. Takes effect the next time the inventory is opened.
+lightAboveHead_desc: How far above the top of your head the light hangs.
 lightRadius_name: Light Radius
-lightRadius_desc: How far the overhead light reaches, in game units. Takes effect the next time the inventory is opened.
+lightRadius_desc: How far the overhead light reaches.
 lightColor_name: Light Color
+
+depthOfField_name: Depth of Field
+depthOfField_desc: |
+  Blurs the scene behind you.
+
+  Requires Post Processing enabled.
+dofEnabled_name: Enable
+aperture_name: Blur Intensity
+fade_name: Fade Speed (sec)
+fade_in: In
+fade_out: Out

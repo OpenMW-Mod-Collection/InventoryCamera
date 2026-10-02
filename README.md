@@ -16,22 +16,22 @@ _Equipment updates right away!_
 
 _Drinking animations from [Consuming Animated](https://www.nexusmods.com/morrowind/mods/59069). Third person camera moves back into its position._
 
-<img src="media/demo4.gif" alt="demo4">
+<img src="media/demo0.gif" alt="demo4">
 
 _How it feels to use this mod._
 
 | **Available features**                          | **Paused** | **Unpaused** | **Notes**                        |
-| :------------------------------------------------| :----------:| :------------:| :---------------------------------|
-| Smooth camera panning                           | ✅          | ✅            |                                  |
-| Settings preview                                | ✅          | ✅            |                                  |
-| Mouse camera controls                           | ✅          | ✅            |                                  |
-| Spotlight shader                                | ✅          | ✅            | Requires Post Processing enabled |
-| Depth of Field shader                           | ✅          | ✅            | Requires Post Processing enabled |
-| Item drag and drop equipping                    | ✅          | ✅            | Requires Inventory Extender      |
-| Item drag and drop unequipping                  | ❌          | ❌            | Not possible yet                 |
-| Real time equipment updates                     | ✅          | ✅            |                                  |
-| Animations                                      | ❌          | ✅            |                                  |
-| Everything else that cannot happen during pause | ❌          | ✅            |                                  |
+| :---------------------------------------------- | :--------: | :----------: | :------------------------------- |
+| Smooth camera panning                           |     ✅     |      ✅      |                                  |
+| Settings preview                                |     ✅     |      ✅      |                                  |
+| Spotlight shader                                |     ✅     |      ✅      | Requires Post Processing enabled |
+| Depth of Field shader                           |     ✅     |      ✅      | Requires Post Processing enabled |
+| Mouse camera controls                           |     ✅     |      ✅      | Requires Inventory Extender      |
+| Item drag and drop equipping                    |     ✅     |      ✅      | Requires Inventory Extender      |
+| Item drag and drop unequipping                  |     ❌     |      ❌      | Not possible yet                 |
+| Real time equipment updates                     |     ✅     |      ✅      |                                  |
+| Animations                                      |     ❌     |      ✅      |                                  |
+| Everything else that cannot happen during pause |     ❌     |      ✅      |                                  |
 
 </div>
 
@@ -46,9 +46,11 @@ Confirmed to be compatible with:
 - [Rock the Boat](https://www.nexusmods.com/morrowind/mods/59338)
 - [Red Mountain Tremors](https://www.nexusmods.com/morrowind/mods/53637)
 - [Devilish Alcohol Overhaul](https://www.nexusmods.com/morrowind/mods/55038) version 2.5 or newer
-- [Devilish Touch of Madness](https://www.nexusmods.com/morrowind/mods/59337) version 1.9 or newer
+- [Devilish Touch of Madness](https://www.nexusmods.com/morrowind/mods/59337) version 2.2 or newer
 - [Consuming Animated](https://www.nexusmods.com/morrowind/mods/59069) version 2.0.3.1 or newer
 - [Dynamic Camera](https://www.nexusmods.com/morrowind/mods/55327) - version 2.7 or newer
+
+Load order doesn't matter.
 
 ## FAQ / Troubleshooting
 

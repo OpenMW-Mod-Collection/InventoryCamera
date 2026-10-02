@@ -182,18 +182,17 @@ function M.exit()
         camera.setRoll(savedRoll)
 
         -- Dynamic Camera compat
-        if isFirstPerson and I.DynamicCamera then
-            local speedMult = I.DynamicCamera.camSpeedMult
-            if speedMult and speedMult ~= 0 then
-                self.controls.yawChange = self.controls.yawChange + (savedYaw - curYaw) / speedMult
-                self.controls.pitchChange = self.controls.pitchChange + (savedPitch - curPitch) / speedMult
-            end
-        else
-            camera.setYaw(savedYaw)
-            camera.setPitch(savedPitch)
+        if I.DynamicCamera then
+            I.DynamicCamera.setCameraControlSuspended(true, "InventoryCamera")
         end
-        
+
+        camera.setYaw(savedYaw)
+        camera.setPitch(savedPitch)
         camera.instantTransition()
+
+        if I.DynamicCamera then
+            I.DynamicCamera.setCameraControlSuspended(false, "InventoryCamera")
+        end
     end
 end
 

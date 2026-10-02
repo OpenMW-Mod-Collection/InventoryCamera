@@ -98,7 +98,7 @@ end
 
 local function rotate(delta)
     takeControl()
-    local speed = RAD_PER_PIXEL * settings.controls.rotateSpeed / 100
+    local speed = RAD_PER_PIXEL * settings.controls.speed.speed_rotate / 100
     -- Same sense as mouse look: drag right turns the view right, drag down
     -- looks further down (camera rises).
     target.yaw = target.yaw + delta.x * speed
@@ -111,7 +111,7 @@ end
 -- whether zoomed in or out.
 local function move(delta)
     takeControl()
-    local speed = OFFSET_PER_PIXEL * (settings.controls.panSpeed / 100) * (target.distance / 250)
+    local speed = OFFSET_PER_PIXEL * (settings.controls.speed.speed_pan / 100) * (target.distance / 250)
     target.offset = util.vector2(
         target.offset.x - delta.x * speed,
         target.offset.y + delta.y * speed
@@ -166,11 +166,11 @@ local function onPress(e)
             ie.forward('mousePress', e) -- IE picks it up
             return
         end
-        if not settings.controls.enableMouseControls.rotate then return end
+        if not settings.controls.enableMouseControls.enableMouseControls_rotate then return end
         dragButton = LMB
         lastPos = e.position
     elseif e.button == MMB then
-        if not settings.controls.enableMouseControls.move then return end
+        if not settings.controls.enableMouseControls.enableMouseControls_move then return end
         if ie.carried() or ie.hoveredItem() then return end -- don't fight IE's drag/drop
         dragButton = MMB
         lastPos = e.position
@@ -206,9 +206,18 @@ end
 
 --- Puts up the catcher. Call once the inventory camera has taken over.
 function M.start()
-    if catcher then return end
-    local c = settings.controls.enableMouseControls
-    if not (c.rotate or c.move or c.zoom or c.dropToEquip) then return end
+    if catcher or not I.InventoryExtender then return end
+
+    local emc = settings.controls.enableMouseControls
+    if not (
+        emc.enableMouseControls_rotate
+        or emc.enableMouseControls_move
+        or emc.enableMouseControls_zoom
+        or settings.controls.dropToEquip
+    ) then
+        return
+    end
+
     ensureLayer()
     dragButton, hovered, lastPos, overCharacter = nil, false, nil, false
 
@@ -247,11 +256,11 @@ end
 --- onMouseWheel handler. The wheel also reaches MyGUI, so only zoom while
 --- the cursor is over the catcher - not while scrolling the item list.
 function M.onMouseWheel(vertical)
-    if not catcher or not hovered or not settings.controls.enableMouseControls.zoom then return end
+    if not catcher or not hovered or not settings.controls.enableMouseControls.enableMouseControls_zoom then return end
     takeControl()
-    local step = clamp(ZOOM_STEP * settings.controls.zoomSpeed / 100, 0, 0.9)
-    local lo = settings.controls.minDistance
-    local hi = math.max(lo, settings.controls.maxDistance)
+    local step = clamp(ZOOM_STEP * settings.controls.speed.speed_zoom / 100, 0, 0.9)
+    local lo = settings.controls.distanceCap.distanceCap_min
+    local hi = math.max(lo, settings.controls.distanceCap.distanceCap_max)
     local oldDistance = target.distance
     -- Multiplicative, so each notch feels the same close up and far out.
     local newDistance = clamp(oldDistance * (1 - step) ^ vertical, lo, hi)

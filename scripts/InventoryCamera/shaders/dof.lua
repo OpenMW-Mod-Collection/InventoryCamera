@@ -70,15 +70,15 @@ function M.update()
 
     local goal = (active and settings.dof.enabled) and 1 or 0
     local dt = core.getRealFrameDuration()
-    local fadeIn = settings.dof.fadeIn
-    local fadeOut = settings.dof.fadeOut
+    local fadeIn = settings.dof.fade.fade_in
+    local fadeOut = settings.dof.fade.fade_out
     if strength < goal then
         strength = math.min(goal, strength + dt / fadeIn)
     elseif strength > goal then
         strength = math.max(goal, strength - dt / fadeOut)
     end
 
-    local effectiveAperture = settings.dof.aperture * strength
+    local effectiveAperture = settings.dof.aperture / 100 * strength
 
     if effectiveAperture == 0 and sentAperture == 0 then return end
     sentAperture = effectiveAperture

@@ -1,4 +1,5 @@
 MENU: scripts/InventoryCamera/utils/multicheckBox.lua
+MENU: scripts/InventoryCamera/utils/multiNumber.lua
 MENU: scripts/InventoryCamera/utils/SuperSlider6.lua
 MENU: scripts/InventoryCamera/utils/SuperSelect3.lua
 MENU: scripts/InventoryCamera/utils/colorPicker.lua
