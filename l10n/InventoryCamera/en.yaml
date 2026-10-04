@@ -31,7 +31,7 @@ none: None
 skipDuringCombat_name: Disable During Combat
 requireInvWindow_name: Require Inventory Window
 requireInvWindow_desc: >
-  UI mods tend to use Inventory UI Mode with now actual windows to clean your screen.
+  UI mods tend to use Inventory UI Mode  actual windows to clean your screen.
   With this setting enabled the mod will ignore such cases.
 
 startingPosition_name: Starting Position
@@ -59,13 +59,24 @@ controls_desc: |
   Work over empty screen space only - anywhere that is not a window.
 
   Requires Inventory Extender. Without it, it will block dropping items into the world.
-enableMouseControls_name: Enable
-enableMouseControls_rotate: LMB - Rotate
-enableMouseControls_move: MMB - Move
-enableMouseControls_zoom: Mouse Wheel - Zoom
-speed_name: Mouse Contols Speed (%)
+enableMouseControls_name: Enable Mouse Controls
+enableMouseControls_desc: >
+  Zooming is done with the mouse wheel.
+  Other features are configured below.
+enableMouseControls_rotate: Rotate
+enableMouseControls_move: Pan
+enableMouseControls_zoom: Zoom
+controlRotate_name: Rotate Modifier
+controlRotate_desc: Key to hold while dragging the mouse to rotate the camera around your character.
+controlMove_name: Pan Modifier
+controlMove_desc: Key to hold while dragging the mouse to slide the camera up, down, left and right without changing its angle.
+lmb: LMB
+lmb_shift: LMB + Shift
+lmb_ctrl: LMB + Ctrl
+lmb_alt: LMB + Alt
+speed_name: Mouse Controls Speed (%)
 speed_rotate: Rotate
-speed_pan: Move
+speed_pan: Pan
 speed_zoom: Zoom
 distanceCap_name: Zooming Distance Caps
 distanceCap_min: Closest

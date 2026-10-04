@@ -273,7 +273,7 @@ I.Settings.registerGroup {
         distance = 80,
         pitch = 10,
         yaw = 150,
-        roll = -3,
+        roll = 0,
         hOffset = -35,
         vOffset = -25,
     }
@@ -313,6 +313,7 @@ I.Settings.registerGroup {
         {
             key = "enableMouseControls",
             name = "enableMouseControls_name",
+            description = "enableMouseControls_desc",
             renderer = "multiCheckbox",
             default = {
                 enableMouseControls_rotate = true,
@@ -327,6 +328,40 @@ I.Settings.registerGroup {
                     "enableMouseControls_zoom",
                 },
                 colorful = true,
+            },
+        },
+        {
+            key = "controlRotate",
+            name = "controlRotate_name",
+            description = "controlRotate_desc",
+            renderer = "SuperSelect3",
+            default = "lmb",
+            argument = {
+                l10n = "InventoryCamera",
+                items = {
+                    "lmb",
+                    "lmb_shift",
+                    "lmb_ctrl",
+                    "lmb_alt",
+                },
+                width = 150,
+            },
+        },
+        {
+            key = "controlMove",
+            name = "controlMove_name",
+            description = "controlMove_desc",
+            renderer = "SuperSelect3",
+            default = "lmb_shift",
+            argument = {
+                l10n = "InventoryCamera",
+                items = {
+                    "lmb",
+                    "lmb_shift",
+                    "lmb_ctrl",
+                    "lmb_alt",
+                },
+                width = 150,
             },
         },
         {

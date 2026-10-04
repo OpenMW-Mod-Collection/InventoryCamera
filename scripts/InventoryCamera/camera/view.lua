@@ -181,17 +181,15 @@ function M.exit()
         camera.setPreferredThirdPersonDistance(savedDistance)
         camera.setRoll(savedRoll)
 
-        -- Dynamic Camera compat
-        if I.DynamicCamera then
-            I.DynamicCamera.setCameraControlSuspended(true, "InventoryCamera")
-        end
-
         camera.setYaw(savedYaw)
         camera.setPitch(savedPitch)
         camera.instantTransition()
 
+        -- Dynamic Camera compat
         if I.DynamicCamera then
-            I.DynamicCamera.setCameraControlSuspended(false, "InventoryCamera")
+            I.DynamicCamera.setCameraControlSuspended(true, "InventoryCamera")
+            -- has to be delayed by 1 frame
+            self:sendEvent("InventoryCamera_unpauseDynamicCamera")
         end
     end
 end

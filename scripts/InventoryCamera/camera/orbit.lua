@@ -34,7 +34,6 @@ local ie = require("scripts.InventoryCamera.utils.inventoryExtender")
 
 local LAYER = "InventoryCameraOrbit"
 local LMB = 1                       -- SDL button index, as UI mouse events report it
-local MMB = 2
 local RAD_PER_PIXEL = math.rad(0.3) -- at Rotation Speed 100%
 local OFFSET_PER_PIXEL = 0.6        -- world units per pixel at distance 250, at Pan Speed 100%
 local ZOOM_STEP = 0.12              -- fraction of the distance per wheel notch, at Zoom Speed 100%
@@ -72,7 +71,7 @@ local tooltip = ui.create {
 
 ---@type openmw.ui.Element|nil
 local catcher = nil
-local dragButton = nil -- LMB, MMB, or nil
+local dragMode = nil -- "rotate", "move", or nil
 local hovered = false
 local lastPos = nil
 local overCharacter = false -- cursor on the character's body, as of the last move
@@ -155,39 +154,52 @@ local function checkOverCharacter(position)
     nearby.asyncCastRenderingRay(onCharacterRay, from, from + dir * RAY_LENGTH)
 end
 
-local function onPress(e)
-    if e.button == LMB then
-        if ie.carried() then
-            if overCharacter and settings.controls.dropToEquip and ie.useCarried() then return end
-            ie.forward('mousePress', e) -- IE drops it into the world
-            return
-        end
-        if ie.hoveredItem() then
-            ie.forward('mousePress', e) -- IE picks it up
-            return
-        end
-        if not settings.controls.enableMouseControls.enableMouseControls_rotate then return end
-        dragButton = LMB
-        lastPos = e.position
-    elseif e.button == MMB then
-        if not settings.controls.enableMouseControls.enableMouseControls_move then return end
-        if ie.carried() or ie.hoveredItem() then return end -- don't fight IE's drag/drop
-        dragButton = MMB
-        lastPos = e.position
+local function currentModifier()
+    if input.isShiftPressed() then return "lmb_shift" end
+    if input.isCtrlPressed() then return "lmb_ctrl" end
+    if input.isAltPressed() then return "lmb_alt" end
+    return "lmb"
+end
+
+local function dragModeForPress()
+    local emc = settings.controls.enableMouseControls
+    local mod = currentModifier()
+    if emc.enableMouseControls_rotate and settings.controls.controlRotate == mod then
+        return "rotate"
     end
+    if emc.enableMouseControls_move and settings.controls.controlMove == mod then
+        return "move"
+    end
+    return nil
+end
+
+local function onPress(e)
+    if e.button ~= LMB then return end
+
+    if ie.carried() then
+        if overCharacter and settings.controls.dropToEquip and ie.useCarried() then return end
+        ie.forward('mousePress', e) -- IE drops it into the world
+        return
+    end
+    if ie.hoveredItem() then
+        ie.forward('mousePress', e) -- IE picks it up
+        return
+    end
+
+    local mode = dragModeForPress()
+    if not mode then return end
+    dragMode = mode
+    lastPos = e.position
 end
 
 -- Fires for plain hovering and for drags (the engine routes MyGUI's drag
 -- event here too, with e.button set).
 local function onMove(e)
     hovered = true
-    if dragButton == LMB then
-        rotate(e.position - lastPos)
+    if dragMode then
+        local delta = e.position - lastPos
         lastPos = e.position
-        return
-    elseif dragButton == MMB then
-        move(e.position - lastPos)
-        lastPos = e.position
+        if dragMode == "rotate" then rotate(delta) else move(delta) end
         return
     end
     ie.forward('mouseMove', e)
@@ -210,16 +222,16 @@ function M.start()
 
     local emc = settings.controls.enableMouseControls
     if not (
-        emc.enableMouseControls_rotate
-        or emc.enableMouseControls_move
-        or emc.enableMouseControls_zoom
-        or settings.controls.dropToEquip
-    ) then
+            emc.enableMouseControls_rotate
+            or emc.enableMouseControls_move
+            or emc.enableMouseControls_zoom
+            or settings.controls.dropToEquip
+        ) then
         return
     end
 
     ensureLayer()
-    dragButton, hovered, lastPos, overCharacter = nil, false, nil, false
+    dragMode, hovered, lastPos, overCharacter = nil, false, nil, false
 
     catcher = ui.create {
         layer = LAYER,
@@ -228,7 +240,7 @@ function M.start()
         events = {
             mousePress = async:callback(onPress),
             mouseRelease = async:callback(function(e)
-                if e.button == dragButton then dragButton = nil end
+                if e.button == LMB then dragMode = nil end
             end),
             mouseMove = async:callback(onMove),
             focusGain = async:callback(function() hovered = true end),
@@ -249,7 +261,7 @@ function M.stop()
         catcher = nil
     end
     hideTooltip()
-    dragButton, hovered, lastPos, overCharacter = nil, false, nil, false
+    dragMode, hovered, lastPos, overCharacter = nil, false, nil, false
     target, current = nil, nil
 end
 
@@ -281,10 +293,8 @@ function M.update()
     if not target then return end
 
     -- The release can be missed, e.g. if it happens while alt-tabbed.
-    if dragButton == LMB and not input.isMouseButtonPressed(LMB) then
-        dragButton = nil
-    elseif dragButton == MMB and not input.isMouseButtonPressed(MMB) then
-        dragButton = nil
+    if dragMode and not input.isMouseButtonPressed(LMB) then
+        dragMode = nil
     end
 
     local dYaw = target.yaw - current.yaw

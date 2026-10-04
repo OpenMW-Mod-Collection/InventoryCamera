@@ -1,22 +1,23 @@
 # Inventory Camera (OpenMW)
 
-Open your inventory with style!
+Open your inventory with style! It's like paper doll, but cooler.
 
 <div align="center">
 
 <img src="media/demo1.gif" alt="demo1">
 
-_Idle animations from [Dynamic Actors](https://www.nexusmods.com/morrowind/mods/54782) and head tracking._
+_Interact with items as if you're the paper doll._
 
 <img src="media/demo2.gif" alt="demo2">
 
-_Equipment updates right away!_
+_Equipment updates right away and 3rd person camera moves back._  
+_Spotlight shader for theatrical effect._
 
 <img src="media/demo3.gif" alt="demo3">
 
-_Drinking animations from [Consuming Animated](https://www.nexusmods.com/morrowind/mods/59069). Third person camera moves back into its position._
+_Preview the settings straight from the menu._
 
-<img src="media/demo0.gif" alt="demo4">
+<img src="media/demo0.gif" alt="demo0">
 
 _How it feels to use this mod._
 

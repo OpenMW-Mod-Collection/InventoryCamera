@@ -91,5 +91,8 @@ return {
     eventHandlers = {
         UiModeChanged = onUiModeChanged,
         OMWMusicCombatTargetsChanged = combatTracker.OMWMusicCombatTargetsChanged,
+        InventoryCamera_unpauseDynamicCamera = function()
+            I.DynamicCamera.setCameraControlSuspended(false, "InventoryCamera")
+        end,
     },
 }
