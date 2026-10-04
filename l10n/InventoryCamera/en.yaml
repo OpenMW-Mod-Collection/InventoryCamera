@@ -58,7 +58,7 @@ controls_name: Mouse Controls
 controls_desc: |
   Work over empty screen space only - anywhere that is not a window.
 
-  Requires Inventory Extender. Without it, it will block dropping items into the world.
+  Requires Inventory Extender.
 enableMouseControls_name: Enable Mouse Controls
 enableMouseControls_desc: >
   Zooming is done with the mouse wheel.

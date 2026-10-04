@@ -1,5 +1,9 @@
 # Inventory Camera (OpenMW)
 
+## 3.0.1
+
+- Fixed the wrong description for Mouse Controls settings section
+
 ## 3.0
 
 - Added partial paper doll-like interactions with the player. Selecting an item and dropping it onto the player now uses the item (equips, consumes, opens, etc). Doesn't work for gear unequipping. Requires Inventory Extender

@@ -36,7 +36,7 @@ _How it feels to use this mod._
 
 </div>
 
-The mod does not come with inventory unpausing feature - for it you would need to install an separate mod. I personaly recommend [Unpause](https://www.nexusmods.com/morrowind/mods/60018).
+The mod does not come with inventory unpausing feature - for it you would need to install an separate mod. I personally recommend [Unpause](https://www.nexusmods.com/morrowind/mods/60018).
 
 ## Compatibility
 
