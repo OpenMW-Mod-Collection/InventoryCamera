@@ -22,7 +22,7 @@ local I = require('openmw.interfaces')
 local M = {}
 
 local function dragAndDrop()
-    local ie = I.InventoryExtender
+    local ie = I.InventoryExtender or I.InventoryExtenderRedone
     local ctx = ie and ie.getContext and ie.getContext()
     return ctx and ctx.dragAndDrop
 end
@@ -66,6 +66,7 @@ function M.useCarried()
     local item = dnd and dnd.draggingObject
     if not item then return false end
     core.sendGlobalEvent('IE_UseItem', { object = item, actor = self.object })
+    core.sendGlobalEvent('IER_UseItem', { object = item, actor = self.object })
     dnd:stopDrag()
     return true
 end

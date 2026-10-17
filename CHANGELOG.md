@@ -1,5 +1,9 @@
 # Inventory Camera (OpenMW)
 
+## 3.0.2
+
+- Added barebones support for Inventory Extender Redone
+
 ## 3.0.1
 
 - Fixed the wrong description for Mouse Controls settings section
