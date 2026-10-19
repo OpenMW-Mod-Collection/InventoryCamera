@@ -11,7 +11,6 @@
 local camera = require('openmw.camera')
 local postprocessing = require('openmw.postprocessing')
 local self = require('openmw.self')
-local core = require("openmw.core")
 
 local settings = require("scripts.InventoryCamera.settingsManager")
 
@@ -64,12 +63,11 @@ function M.exit()
 end
 
 --- Call every frame (onFrame - it keeps running while the world is paused).
-function M.update()
+function M.update(dt)
     syncShaderEnabled()
     if not shaderOn then return end
 
     local goal = (active and settings.dof.enabled) and 1 or 0
-    local dt = core.getRealFrameDuration()
     local fadeIn = settings.dof.fade.fade_in
     local fadeOut = settings.dof.fade.fade_out
     if strength < goal then

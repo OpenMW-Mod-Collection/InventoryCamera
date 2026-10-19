@@ -8,7 +8,6 @@
 -- normal setYaw/setPreferredThirdPersonDistance/etc setters).
 
 local camera = require('openmw.camera')
-local core = require('openmw.core')
 
 local state = {
     running = false,
@@ -131,10 +130,9 @@ end
 -- inventory is open), and onFrame's simulation dt is forced to 0 whenever
 -- core.isWorldPaused() is true. Real frame duration keeps ticking
 -- regardless, so the pan uses that instead.
-function M.update(yawPanDirection)
+function M.update(dt, yawPanDirection)
     if not state.running then return end
 
-    local dt = core.getRealFrameDuration()
     state.elapsed = state.elapsed + dt
     local t = math.min(state.elapsed / state.duration, 1)
     local eased = t * t * (3 - 2 * t) -- smoothstep

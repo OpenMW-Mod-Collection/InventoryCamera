@@ -23,8 +23,6 @@ local settings = require("scripts.InventoryCamera.settingsManager")
 local SHADER = "inventoryCameraSpotlight"
 local FALLBACK_RADIUS = 30  -- character size if the engine can't tell us
 local FALLBACK_HEIGHT = 130
-local FADE_IN = 0.6         -- seconds
-local FADE_OUT = 0.35
 
 local M = {}
 
@@ -68,8 +66,8 @@ end
 -- The collision shape rather than the render bounding box: it doesn't swing
 -- with the animation, and it follows race and creature size.
 local function characterSize()
-    local ok, bounds = pcall(types.Actor.getPathfindingAgentBounds, self)
-    if ok and bounds and bounds.halfExtents then
+    local bounds = types.Actor.getPathfindingAgentBounds(self)
+    if bounds and bounds.halfExtents then
         local h = bounds.halfExtents
         return math.max(h.x, h.y), h.z * 2
     end
@@ -107,16 +105,15 @@ function M.exit()
 end
 
 --- Call every frame (onFrame - it keeps running while the world is paused).
-function M.update()
+function M.update(dt)
     syncShaderEnabled()
     if not shaderOn then return end
 
     local goal = (active and settings.spot.enabled) and 1 or 0
-    local dt = core.getRealFrameDuration()
     if strength < goal then
-        strength = math.min(goal, strength + dt / FADE_IN)
+        strength = math.min(goal, strength + dt / settings.spot.fade.fade_in)
     elseif strength > goal then
-        strength = math.max(goal, strength - dt / FADE_OUT)
+        strength = math.max(goal, strength - dt / settings.spot.fade.fade_out)
     end
 
     if strength == 0 and sentStrength == 0 then return end

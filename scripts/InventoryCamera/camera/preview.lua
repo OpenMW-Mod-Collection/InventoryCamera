@@ -65,17 +65,19 @@ function M.start(kind)
 
     local section = (kind == 'start') and settings.start or settings.finish
 
-    local yaw = self.rotation:getYaw() + math.rad(settings.start.yaw)
-    if kind == 'finish' then
-        yaw = yaw + math.rad(settings.finish.yaw)
-    end
-
+    local yaw = self.rotation:getYaw() + math.rad(section.yaw)
     -- Preview the section's own offset, same as distance/pitch/roll below -
     -- not combined with the other section's offset, mirroring how distance/
     -- pitch/roll are picked directly from `section` rather than summed.
     local offset = v2(section.horizontalOffset, section.verticalOffset)
 
     pose.apply(yaw, math.rad(section.pitch), math.rad(section.roll), section.distance, offset)
+    -- Dynamic Camera compat
+    if I.DynamicCamera then
+        I.DynamicCamera.setCameraControlSuspended(true, "InventoryCamera")
+        -- has to be delayed by 1 frame
+        self:sendEvent("InventoryCamera_unpauseDynamicCamera")
+    end
 end
 
 function M.update(dt)

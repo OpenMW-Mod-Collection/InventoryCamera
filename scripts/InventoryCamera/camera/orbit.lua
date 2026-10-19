@@ -20,7 +20,6 @@
 local ui = require('openmw.ui')
 local async = require('openmw.async')
 local camera = require('openmw.camera')
-local core = require('openmw.core')
 local input = require('openmw.input')
 local nearby = require('openmw.nearby')
 local self = require('openmw.self')
@@ -289,7 +288,7 @@ function M.onMouseWheel(vertical)
 end
 
 --- Call every frame (onFrame - it keeps running while the world is paused).
-function M.update()
+function M.update(dt)
     if not target then return end
 
     -- The release can be missed, e.g. if it happens while alt-tabbed.
@@ -308,7 +307,7 @@ function M.update()
         return
     end
 
-    local k = 1 - math.exp(-SMOOTHING * core.getRealFrameDuration())
+    local k = 1 - math.exp(-SMOOTHING * dt)
     current.yaw = current.yaw + dYaw * k
     current.pitch = current.pitch + dPitch * k
     current.distance = current.distance + dDistance * k

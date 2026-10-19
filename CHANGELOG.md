@@ -1,5 +1,12 @@
 # Inventory Camera (OpenMW)
 
+## 3.1
+
+- Added settings for changing Spotlight fade in/out speed
+- Minor optimizations (like really really small)
+- Fixed final position preview not being aligned with in-game inventory camera
+- Swapped MultiNumber settings renderer with MultiInput, fixing setting not always being saved
+
 ## 3.0.2
 
 - Added support for Inventory Extender Redone

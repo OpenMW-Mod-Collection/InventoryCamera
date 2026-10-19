@@ -1,6 +1,8 @@
+---@diagnostic disable: undefined-field
 ---@omw-context player
 local input = require("openmw.input")
 local I = require("openmw.interfaces")
+local core = require("openmw.core")
 
 local settings = require("scripts.InventoryCamera.settingsManager")
 local pan = require("scripts.InventoryCamera.camera.pan")
@@ -37,10 +39,15 @@ end
 -- is always 0 on pause), so panning is driven from here to allow smooth
 -- offset/yaw/pitch/roll/distance transitions while paused.
 local function onFrame(dt)
-    pan.update(settings.cam.yawPanDirection)
-    orbit.update()
-    spotlight.update()
-    dof.update()
+    -- get frame duration if the game is paused
+    if dt == 0 then
+        dt = core.getRealFrameDuration()
+    end
+
+    pan.update(dt, settings.cam.yawPanDirection)
+    orbit.update(dt)
+    spotlight.update(dt)
+    dof.update(dt)
 end
 
 local function enterView()

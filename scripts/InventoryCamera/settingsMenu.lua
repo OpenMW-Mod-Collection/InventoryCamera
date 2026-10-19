@@ -367,13 +367,14 @@ I.Settings.registerGroup {
         {
             key = 'speed',
             name = 'speed_name',
-            renderer = 'multiNumber_V1',
+            renderer = 'multiInput_V1',
             default = {
                 speed_rotate = 100,
                 speed_pan = 100,
                 speed_zoom = 100,
             },
             argument = {
+                mode = "number",
                 l10n = "InventoryCamera",
                 keys = {
                     "speed_rotate",
@@ -385,12 +386,13 @@ I.Settings.registerGroup {
         {
             key = 'distanceCap',
             name = 'distanceCap_name',
-            renderer = 'multiNumber_V1',
+            renderer = 'multiInput_V1',
             default = {
                 distanceCap_min = 40,
                 distanceCap_max = 350,
             },
             argument = {
+                mode = "number",
                 l10n = "InventoryCamera",
                 keys = {
                     "distanceCap_min",
@@ -434,6 +436,27 @@ I.Settings.registerGroup {
         slider("opacity", 66, 0, 100, "%", 1, "Transparent", "Pitch Black"),
         slider("radiusScale", 2.5, 0, 6, "x", 0.1),
         slider("softness", 35, 0, 100, "%", 1),
+        {
+            key = 'fade',
+            name = 'fade_name',
+            renderer = 'multiInput_V1',
+            default = {
+                fade_in = 0.6,
+                fade_out = 0.35,
+            },
+            argument = {
+                mode = "number",
+                l10n = "InventoryCamera",
+                keys = {
+                    "fade_in",
+                    "fade_out",
+                },
+                min = {
+                    fade_in = 0,
+                    fade_out = 0,
+                },
+            },
+        },
         {
             key = "light",
             name = "light_name",
@@ -490,12 +513,13 @@ I.Settings.registerGroup {
         {
             key = 'fade',
             name = 'fade_name',
-            renderer = 'multiNumber_V1',
+            renderer = 'multiInput_V1',
             default = {
                 fade_in = 2,
                 fade_out = 0.3,
             },
             argument = {
+                mode = "number",
                 l10n = "InventoryCamera",
                 keys = {
                     "fade_in",
