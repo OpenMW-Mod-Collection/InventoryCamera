@@ -2,7 +2,7 @@
 
 ## 3.0.2
 
-- Added barebones support for Inventory Extender Redone
+- Added support for Inventory Extender Redone
 
 ## 3.0.1
 

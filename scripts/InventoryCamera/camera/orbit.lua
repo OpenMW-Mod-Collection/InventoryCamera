@@ -218,7 +218,7 @@ end
 
 --- Puts up the catcher. Call once the inventory camera has taken over.
 function M.start()
-    if catcher or not I.InventoryExtender then return end
+    if catcher or not (I.InventoryExtender or I.InventoryExtenderRedone) then return end
 
     local emc = settings.controls.enableMouseControls
     if not (
